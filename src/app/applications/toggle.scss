@@ -1,0 +1,17 @@
+.toggle {
+  font-weight: lighter;
+  cursor: pointer;
+  .active {
+    font-weight: normal !important;
+    border-bottom: solid 2px black !important;
+  }
+  .new {
+    padding-right: 1.5em;
+    padding-left: 1em;
+    border-bottom: solid 2px #ced7da;
+  }
+  .approved {
+    padding-right: 1em;
+    border-bottom: solid 2px #ced7da;
+  }
+}

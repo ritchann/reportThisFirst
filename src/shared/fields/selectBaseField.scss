@@ -1,0 +1,86 @@
+.multiselect {
+  cursor: pointer;
+  .label {
+    font-weight: 500;
+  }
+  .container {
+    position: relative;
+    height: 2.5em;
+    .selected {
+      background-color: #ecf1f9;
+    }
+    .box {
+      background-color: grey;
+      margin: 0.15em;
+      padding: 0.1em 0.3em;
+      border-radius: 0.2em;
+      font-size: 0.8em;
+      .icon {
+        margin-left: 0.7em;
+        cursor: pointer;
+        font-size: smaller;
+      }
+    }
+    .content {
+      min-height: 1.2em;
+    }
+    .icons {
+      margin-left: 1em;
+      display: flex;
+      align-items: center;
+    }
+    .cross {
+      color: #c0c0c0;
+      padding-right: 0.6em;
+      margin-right: 0.6em;
+      border-right: solid grey 2px;
+    }
+    .cross:hover {
+      color: blue;
+    }
+    .cross:active {
+      color: blue;
+    }
+    .dropdown-container {
+      position: absolute;
+      left: 0;
+      .dropdown {
+        border-radius: 0.2em;
+        position: relative;
+        margin: 1em 0;
+        padding: 0.1em;
+        z-index: 1;
+        background-color: white;
+        box-shadow: 0px 0px 2px 2px rgba(179, 179, 179, 0.25);
+        .items {
+          overflow-y: auto;
+          max-height: 16em;
+          .item {
+            min-height: 1.6em;
+          }
+        }
+        .input-container {
+          margin: 0.5em;
+          border: solid #c0c0c0 1px;
+          border-radius: 0.2em;
+          padding: 0.15em 0.5em;
+          .input {
+            border: none;
+            outline: none;
+          }
+          .icon {
+            color: #c0c0c0;
+          }
+        }
+      }
+    }
+  }
+  .container.active {
+    border-radius: 0.2em;
+  }
+
+  .container.disable {
+    opacity: 0.75;
+    border: solid #c0c0c0 1px;
+  }
+}

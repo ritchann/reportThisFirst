@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,500&display=swap');
+@import 'app/constants.scss';
+
+$primary: $blue;
+$danger: $red;
+$btn-line-height-sm: 1.1;
+$input-btn-focus-width: 0.1em;
+
+@import '~bootstrap/scss/bootstrap';
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+#root {
+  margin: 0;
+}

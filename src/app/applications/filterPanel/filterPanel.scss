@@ -1,0 +1,16 @@
+@import '../../constants.scss';
+
+.filter-panel {
+  margin-right: 2em;
+  .form-control {
+    font-size: 0.65em;
+    font-weight: lighter;
+    padding: 0.6em 3.5em 0.6em 1em;
+    height: 2.5em;
+    font-style: italic;
+    border: 1px solid $white;
+  }
+  .title {
+    font-size: 0.75em;
+  }
+}

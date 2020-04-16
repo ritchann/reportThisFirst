@@ -1,0 +1,14 @@
+.dropdown-item {
+  user-select: none;
+  cursor: pointer;
+
+  img {
+    +span {
+      padding-left: 0.5rem;
+    }
+  }
+}
+
+.dropdown-item.disabled {
+  color: #6c757d !important;
+}

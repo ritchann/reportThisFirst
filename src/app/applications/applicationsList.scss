@@ -1,0 +1,21 @@
+.applicationsList {
+  padding-left: 3em;
+  padding-right: 3em;
+  width: 60em;
+  .button {
+    font-size: 0.8em;
+    margin-left: 0.5em;
+    font-weight: lighter;
+    margin-right: 0.5em;
+  }
+  .btn-sm {
+    width: 7rem;
+    font-weight: lighter;
+  }
+  & > div {
+    margin-bottom: 1.214em;
+  }
+  .text-modal {
+    font-weight: lighter;
+  }
+}

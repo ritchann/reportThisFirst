@@ -1,0 +1,15 @@
+@import 'app/constants.scss';
+
+.checkbox {
+  cursor: default;
+  color: $grey;
+  margin-top: 0.5em;
+  font-weight: lighter;
+  .text {
+    padding-left: 0.5em;
+  }
+}
+.active {
+  color: $black;
+  font-weight: normal;
+}

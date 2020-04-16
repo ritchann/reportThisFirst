@@ -1,0 +1,13 @@
+@import 'app/constants.scss';
+
+.app {
+  height: 100vh;
+  background-color: $bg-app;
+  .sidepanel {
+    flex: 0 0 auto;
+  }
+  .main-container {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+}
