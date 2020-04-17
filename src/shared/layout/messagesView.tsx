@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { useTranslateMessage } from 'app/common/useTranslateMessage';
-import { Block } from 'shared';
+import { Block } from 'shared/base/block';
 import { ActionType } from 'data/actionTypes';
 import { useLoader } from 'core/useLoader';
 
@@ -12,7 +11,6 @@ interface Props {
 }
 
 export const MessagesView: React.FC<Props> = ({ messages, actionType, mod }) => {
-  const translateMessage = useTranslateMessage();
   const item = useLoader(actionType != null ? actionType : ActionType.CORE_NOPE, mod);
   let items: string[];
   if (messages) {
@@ -25,10 +23,10 @@ export const MessagesView: React.FC<Props> = ({ messages, actionType, mod }) => 
 
   if (items) {
     return (
-      <Block text="danger" p="3">
+      <Block p="3">
         <ul className="list-unstyled">
           {items.map((x, i) => (
-            <li key={i}>{translateMessage(x)}</li>
+            <li key={i}>{x}</li>
           ))}
         </ul>
       </Block>

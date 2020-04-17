@@ -1,17 +1,49 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,500&display=swap');
-@import 'app/constants.scss';
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,500&display=swap");
+@import "app/constants.scss";
 
 $primary: $blue;
+$success: $dark-blue;
 $danger: $red;
+$secondary: $grey;
+
 $btn-line-height-sm: 1.1;
 $input-btn-focus-width: 0.1em;
 
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
 
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 #root {
   margin: 0;
+}
+
+.button {
+  font-weight: lighter;
+}
+
+.btn-sm {
+  width: 7rem;
+  font-size: 0.9em;
+}
+
+.water {
+  background-color: $water;
+}
+.electricity {
+  background-color: $electricity;
+}
+.gas {
+  background-color: $gas;
+}
+.heat {
+  background-color: $heat;
+}
+
+.bolder-text {
+  font-weight: bolder;
+}
+.lighter-text {
+  font-weight: lighter;
 }

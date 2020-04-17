@@ -10,6 +10,7 @@ import { Line } from 'shared/base/line';
 import { DateTime } from 'shared/base/utils/dateTime';
 import { priority, type } from 'app/common/translations';
 import { getAddressAsync } from 'data/event/action';
+import { Card as CardContainer, EditButton, ApproveButton, DeleteButton } from 'shared/components';
 
 import { ApproveDialog } from './actions/approveDialog';
 import { DeleteDialog } from './actions/deleteDialog';
@@ -43,7 +44,7 @@ export const Card: React.FC<Props> = ({ event }) => {
 
   return (
     <>
-      <div className="card container">
+      <CardContainer>
         <Line className="card-body">
           <Line vertical mt="3" ml="2">
             <Line className="header" alignItems="baseline">
@@ -77,23 +78,20 @@ export const Card: React.FC<Props> = ({ event }) => {
           <Line className="col-sm card-column buttons" vertical alignItems="end" mt="3">
             <div className="mt-1">
               {currentMode == Visibility.Pending && (
-                <Button className="btn-outline-primary btn-sm mb-2" onClick={() => setShowApproveDialog(true)}>
-                  <div className="button">Подтвердить</div>
-                </Button>
+                <ApproveButton mb="2" />
               )}
               <Link to={`/edit/${event.id}`}>
-                <Button className="btn-outline btn-sm mb-2 edit-button">
-                  <div className="button">Изменить</div>
-                </Button>
+                <EditButton mb="2" />
               </Link>
-              <Button className="btn-outline-danger btn-sm"
-                onClick={() => currentMode == Visibility.Pending ? setShowRejectDialog(true) : setShowDeleteDialog(true)}>
-                <div className="button">{currentMode == Visibility.Pending ? 'Отклонить' : 'Удалить'}</div>
-              </Button>
+              <DeleteButton
+                onClick={() => currentMode == Visibility.Pending ? setShowRejectDialog(true) : setShowDeleteDialog(true)}
+                isReject={currentMode == Visibility.Pending}
+                mb="2"
+              />
             </div>
           </Line>
         </Line>
-      </div>
+      </CardContainer>
       {showApproveDialog && <ApproveDialog
         onClose={(needUpdate: boolean) => {
           setShowApproveDialog(false);

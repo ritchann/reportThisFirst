@@ -4,6 +4,7 @@ import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
 import { faCheckSquare } from '@fortawesome/free-regular-svg-icons/faCheckSquare';
 import { faArrowAltCircleUp } from '@fortawesome/free-regular-svg-icons/faArrowAltCircleUp';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons/faCheckCircle';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons/faCalendar';
 //solid
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
@@ -12,6 +13,7 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight';
 import { faAngleDown } from  '@fortawesome/free-solid-svg-icons/faAngleDown';
+import { faUserFriends } from  '@fortawesome/free-solid-svg-icons/faUserFriends';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -21,6 +23,7 @@ library.add(
   faCheckSquare,
   faArrowAltCircleUp,
   faCheckCircle,
+  faCalendar,
   //solid
   faAngleRight,
   faBars,
@@ -28,7 +31,8 @@ library.add(
   faSignOutAlt,
   faTimes,
   faAngleDown,
-  faArrowRight
+  faArrowRight,
+  faUserFriends
 );
 
 export type ImportedIcon =
@@ -45,7 +49,9 @@ export type ImportedIcon =
   | 'arrow-alt-circle-up'
   | 'times'
   | 'angle-down'
-  | 'arrow-right';
+  | 'arrow-right'
+  | 'calendar'
+  | 'user-friends';
 
 export interface Props extends React.HTMLAttributes<any> {
   className?: string;
