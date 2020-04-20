@@ -12,6 +12,7 @@ interface Props {
   size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'auto';
   type?: string;
   prepend?: JSX.Element;
+  className?: string;
 }
 
 export const TextBoxField: React.FC<Props> = ({
@@ -24,7 +25,8 @@ export const TextBoxField: React.FC<Props> = ({
   fieldPath,
   size,
   children,
-  prepend
+  prepend,
+  className
 }) => {
   value = value == null ? '' : value;
   const [message, setMessage] = useState(null);
@@ -49,7 +51,7 @@ export const TextBoxField: React.FC<Props> = ({
   const onchange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value), [onChange]);
 
   return (
-    <div className={classNames('form-group', { [`col-md-${size}`]: size != null })}>
+    <div className={classNames('form-group', { [`col-md-${size}`]: size != null }, className)}>
       {children && <label htmlFor={name}>{children}</label>}
       <div className="input-group">
         {prepend && (

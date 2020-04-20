@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { SidepanelItem } from 'app/applications/sidepanel/sidepanelItem';
 import { useLocation } from 'core/router';
 import { ImportedIcon } from 'shared/base/icon';
-import { Line } from 'shared/base/line';
+import { SidepanelItem } from 'app/sidepanel/sidepanelItem';
+import { Line } from 'shared/base';
 
 import './sidepanel.scss';
 

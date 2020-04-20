@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line } from 'shared/base/line';
+import { Line } from 'shared/base';
 import { Icon, ImportedIcon } from 'shared/base/icon';
 
 import './sidepanelItem.scss';

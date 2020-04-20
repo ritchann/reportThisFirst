@@ -2,8 +2,7 @@ import React, { createRef } from 'react';
 import classNames from 'classnames';
 import DatePicker from 'react-datepicker';
 import TextMask, { conformToMask } from 'react-text-mask';
-
-import { DateTime } from './utils/dateTime';
+import { DateTime } from 'shared/base/utils/dateTime';
 
 import './dateInputField.scss';
 
@@ -17,6 +16,7 @@ interface Props {
   shouldClosedOnSelect?: boolean;
   children?: React.ReactChild;
   disabled?: boolean;
+  className?: string;
 }
 
 const convertFromDate = (value: Date, mask: (string | RegExp)[]) => {
@@ -39,13 +39,14 @@ export const DateInputField: React.FC<Props> = ({
   placeholder,
   shouldClosedOnSelect,
   children,
-  disabled = false
+  disabled = false,
+  className
 }: Props) => {
   const inputRef = createRef<TextMask>();
   const datePickerRef = createRef<DatePicker>();
 
   return (
-    <div className={classNames('form-group w-md-100 date-input-field', { [`col-md-${size}`]: size != null })}>
+    <div className={classNames('form-group w-md-100 date-input-field', { [`col-md-${size}`]: size != null }, className)}>
       <DatePicker
         disabled={disabled}
         shouldCloseOnSelect={shouldClosedOnSelect}

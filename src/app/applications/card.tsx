@@ -5,16 +5,13 @@ import classnames from 'classnames';
 import { StoreType } from 'core/store';
 import { Visibility, ServiceType } from 'data/enum';
 import { EventType } from 'data/event/model';
-import { Button } from 'shared/base/button';
-import { Line } from 'shared/base/line';
+import { Line } from 'shared/base';
 import { DateTime } from 'shared/base/utils/dateTime';
 import { priority, type } from 'app/common/translations';
 import { getAddressAsync } from 'data/event/action';
 import { Card as CardContainer, EditButton, ApproveButton, DeleteButton } from 'shared/components';
 
-import { ApproveDialog } from './actions/approveDialog';
-import { DeleteDialog } from './actions/deleteDialog';
-import { RejectDialog } from './actions/rejectDialog';
+import { ApproveDialog, DeleteDialog, RejectDialog } from './actions';
 import { useApplications } from './hooks/useApplications';
 
 import './card.scss';
@@ -59,7 +56,7 @@ export const Card: React.FC<Props> = ({ event }) => {
             <Line mt="2">
               <Line vertical className="left-column">
                 <div className="lighter-text">{DateTime.format(new Date(event.created_at))}</div>
-                <Line>
+                <Line mt="1">
                   <div>Адрес: </div>
                   <div className="lighter-text pl-1">{address}</div>
                 </Line>
@@ -78,12 +75,13 @@ export const Card: React.FC<Props> = ({ event }) => {
           <Line className="col-sm card-column buttons" vertical alignItems="end" mt="3">
             <div className="mt-1">
               {currentMode == Visibility.Pending && (
-                <ApproveButton mb="2" />
+                <ApproveButton small mb="2" onClick={() => setShowApproveDialog(true)} />
               )}
               <Link to={`/edit/${event.id}`}>
-                <EditButton mb="2" />
+                <EditButton small mb="2" />
               </Link>
               <DeleteButton
+                small
                 onClick={() => currentMode == Visibility.Pending ? setShowRejectDialog(true) : setShowDeleteDialog(true)}
                 isReject={currentMode == Visibility.Pending}
                 mb="2"

@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
-import { Modal } from 'shared/base/modal';
-import { Button } from 'shared/base/button';
 import { useDispatch } from 'react-redux';
+import { EventType } from 'data/event/model';
+import { ActionType } from 'data/actionTypes';
 import { updateEventAsync } from 'data/event/action';
 import { Status } from 'data/enum';
-import { EventType } from 'data/event/model';
-import { LoadingButton } from 'shared/layout/loadingButton';
-import { ActionType } from 'data/actionTypes';
+import { CancelButton } from 'shared/components';
+import { LoadingButton } from 'shared/layout';
+import { Modal } from 'shared/base';
 
 interface Props {
   onClose: (needUpdate: boolean) => void;
@@ -28,9 +28,7 @@ export const ApproveDialog: React.FC<Props> = ({ onClose, event }) => {
 
   const footer = (
     <>
-      <Button onClick={() => onClose(false)} className="btn-outline-secondary btn-sm">
-        Отмена
-      </Button>
+      <CancelButton small onClick={() => onClose(false)} />
       <LoadingButton
         actionType={ActionType.EVENT_UPDATEVENTASYNC}
         onClick={onApply}

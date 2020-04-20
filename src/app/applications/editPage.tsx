@@ -8,7 +8,7 @@ import { TextBoxField } from 'shared/fields/textBoxField';
 import { StoreType } from 'core/store';
 import { EventType } from 'data/event/model';
 import { type, status, priority } from 'app/common/translations';
-import { DateInputField } from 'shared/base/dateInputField';
+import { DateInputField } from 'shared/fields/dateInputField';
 import { DateTime } from 'shared/base/utils/dateTime';
 import { updateEventAsync } from 'data/event/action';
 

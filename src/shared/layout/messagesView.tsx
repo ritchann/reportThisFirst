@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Block } from 'shared/base/block';
 import { ActionType } from 'data/actionTypes';
 import { useLoader } from 'core/useLoader';

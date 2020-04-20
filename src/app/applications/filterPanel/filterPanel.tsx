@@ -1,15 +1,11 @@
 import React, { useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StoreType } from 'core/store';
-import { Line } from 'shared/base/line';
-import { Block } from 'shared/base/block';
-import { Checkbox } from 'shared/base/checkbox';
-import { DateInputField } from 'shared/base/dateInputField';
-import { SimpleSelectField } from 'shared/fields/SimpleSelectField';
-import { status, priority } from 'app/common/translations';
-import { Status, Priority } from 'data/enum';
 import { FilterType } from 'data/event/model';
 import { setFilter } from 'data/event/action';
+import { Line, Block, Checkbox } from 'shared/base';
+import { DateInputField, SimpleSelectField } from 'shared/fields';
+import { priority, status } from 'app/common/translations';
 
 import './filterPanel.scss';
 

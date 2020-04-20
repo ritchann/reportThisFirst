@@ -1,10 +1,12 @@
 import React, { useCallback } from 'react';
-import { Modal } from 'shared/base/modal';
-import { Button } from 'shared/base/button';
 import { useDispatch } from 'react-redux';
 import { updateEventAsync } from 'data/event/action';
 import { Status } from 'data/enum';
 import { EventType } from 'data/event/model';
+import { CancelButton } from 'shared/components';
+import { LoadingButton } from 'shared/layout';
+import { ActionType } from 'data/actionTypes';
+import { Modal } from 'shared/base';
 
 interface Props {
   onClose: (needUpdate: boolean) => void;
@@ -28,12 +30,13 @@ export const RejectDialog: React.FC<Props> = ({ onClose, event }) => {
 
   const footer = (
     <>
-      <Button onClick={() => onClose(false)} className="btn-outline-secondary btn-sm">
-        Отмена
-      </Button>
-      <Button onClick={onApply} className="btn-danger btn-sm">
+      <CancelButton small onClick={() => onClose(false)} />
+      <LoadingButton
+        actionType={ActionType.EVENT_UPDATEVENTASYNC}
+        onClick={onApply}
+        className="btn-danger btn-sm">
         Отклонить
-      </Button>
+      </LoadingButton>
     </>
   );
 
