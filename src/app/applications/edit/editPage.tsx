@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Line } from 'shared/base';
 import { StoreType } from 'core/store';
 import { EventType } from 'data/event/model';
@@ -10,7 +10,6 @@ import { WorkersPanel } from './workersPanel';
 import './editPage.scss';
 
 export const EditPage: React.FC = (props) => {
-  const dispatch = useDispatch();
 
   const events = useSelector((state: StoreType) => state.event.eventList);
 

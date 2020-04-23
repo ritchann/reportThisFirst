@@ -7,7 +7,7 @@ import { Line, Block, Checkbox } from 'shared/base';
 import { DateInputField, SimpleSelectField } from 'shared/fields';
 import { priority, status } from 'app/common/translations';
 
-import './filterPanel.scss';
+import 'app/common/filterPanel.scss';
 
 export const FilterPanel: React.FC = () => {
   const dispatch = useDispatch();

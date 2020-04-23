@@ -1,7 +1,7 @@
 @import "app/constants.scss";
 
 .workersPanel {
-  width: 30%;
+  width: 35%;
   .title {
     font-size: 0.9em;
     width: 100%;
@@ -11,28 +11,32 @@
       color: $dark-grey;
     }
   }
-  .workerCard {
-    margin-top: 1em;
-    height: 5em;
-    padding: 0.9em;
-    .fullSize {
-      width: 100%;
-    }
-    .label {
-      border-radius: 10px;
-      width: 1em;
-      height: 1em;
-      background-color: $electricity;
-      margin-right: 1.5em;
-      margin-left: 1em;
-    }
-    .info {
-      margin-right: 6em;
-      .name {
-        font-size: 1.1em;
+  .cards-container {
+    .workerCard {
+      cursor: pointer;
+      margin-top: 1em;
+      width: 90%;
+      height: 5em;
+      padding: 0.9em;
+      .fullSize {
+        width: 100%;
       }
-      .type {
-        font-weight: lighter;
+      .label {
+        border-radius: 10px;
+        width: 1em;
+        height: 1em;
+        background-color: $electricity;
+        margin-right: 1.5em;
+        margin-left: 1em;
+      }
+      .info {
+        margin-right: 6em;
+        .name {
+          font-size: 1.1em;
+        }
+        .type {
+          font-weight: lighter;
+        }
       }
     }
   }

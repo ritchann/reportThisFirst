@@ -9,7 +9,6 @@ const workers = [
   { name: 'Иванов Иван Иванович', type: 'Электрик' },
   { name: 'Иванов Иван Иванович', type: 'Электрик' },
   { name: 'Иванов Иван Иванович', type: 'Электрик' },
-  { name: 'Иванов Иван Иванович', type: 'Электрик' },
   { name: 'Иванов Иван Иванович', type: 'Электрик' }
 ];
 
@@ -20,7 +19,7 @@ export const WorkersPanel: React.FC = () => {
         <div className="label">Рабочие</div>
         <Icon name="filter"></Icon>
       </Line>
-      <Line vertical>
+      <Line className="cards-container" vertical>
         {workers.map((x, i) => {
           return (
             <Card key={i} className="workerCard">
