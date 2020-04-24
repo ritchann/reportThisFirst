@@ -1,0 +1,13 @@
+@import 'app/constants.scss';
+
+.dropZone {
+  height: 10em;
+  border: 1px dashed $dark-blue;
+  .icon {
+    font-size: 1.5em;
+    color: $dark-blue;
+  }
+  .text {
+    color: $dark-grey;
+  }
+}

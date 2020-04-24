@@ -19,7 +19,7 @@ export const Filter: React.FC = () => {
     }, [dispatch, filter]);
 
   return (
-    <Line pr="4" vertical className="filter-panel">
+    <Line pl="2" vertical className="filter-panel">
       <Block className="title" mt="2">
         Фильтры
       </Block>

@@ -15,6 +15,8 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight';
 import { faAngleDown } from  '@fortawesome/free-solid-svg-icons/faAngleDown';
 import { faUserFriends } from  '@fortawesome/free-solid-svg-icons/faUserFriends';
 import { faFilter } from  '@fortawesome/free-solid-svg-icons/faFilter';
+import { faCloudUploadAlt } from  '@fortawesome/free-solid-svg-icons/faCloudUploadAlt';
+//
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -34,7 +36,8 @@ library.add(
   faAngleDown,
   faArrowRight,
   faUserFriends,
-  faFilter
+  faFilter,
+  faCloudUploadAlt
 );
 
 export type ImportedIcon =
@@ -54,7 +57,8 @@ export type ImportedIcon =
   | 'arrow-right'
   | 'calendar'
   | 'user-friends'
-  | 'filter';
+  | 'filter'
+  | 'cloud-upload-alt';
 
 export interface Props extends React.HTMLAttributes<any> {
   className?: string;
