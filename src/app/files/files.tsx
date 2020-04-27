@@ -9,15 +9,13 @@ import './files.scss';
 
 export const Files: React.FC = () => {
   return (
-    <div className="files">
-      <Line className="title">Плановые отключения</Line>
-      <Line mt="4">
-        <Line className="main-container" vertical>
-          <DropZone />
-          <Archive />
-        </Line>
-        <Filter></Filter>
+    <Line className="files">
+      <Line className="main-container" vertical>
+        <Line className="title" pb="4">Плановые отключения</Line>
+        <DropZone />
+        <Archive />
       </Line>
-    </div>
+      <Filter></Filter>
+    </Line>
   );
 };

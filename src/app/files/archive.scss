@@ -1,1 +1,38 @@
+@import "app/constants.scss";
 
+.archive {
+  padding-top: 3em;
+  .header {
+    width: 100%;
+    padding-bottom: 0.5em;
+    border-bottom: 2px solid $light-grey;
+    .sort {
+      font-size: 0.7em;
+    }
+  }
+  .files-archive {
+    .file-card {
+      margin-top: 1em;
+      height: 7em;
+      .card-container {
+        width: 100%;
+        .icon {
+          font-size: 3em;
+          margin-left: 0.5em;
+          .electricity-icon {
+            color: $electricity;
+          }
+          .water-icon {
+            color: $water;
+          }
+          .gas-icon {
+            color: $gas;
+          }
+        }
+        .title {
+          font-size: 1.2em;
+        }
+      }
+    }
+  }
+}

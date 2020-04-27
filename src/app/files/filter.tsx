@@ -7,6 +7,7 @@ import { setFilter } from 'data/files/action';
 import { FilterType } from 'data/files/model';
 
 import 'app/common/filterPanel.scss';
+import './filter.scss';
 
 export const Filter: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ export const Filter: React.FC = () => {
     }, [dispatch, filter]);
 
   return (
-    <Line pl="2" vertical className="filter-panel">
+    <Line pl="2" vertical className="filter-panel files-filters">
       <Block className="title" mt="2">
         Фильтры
       </Block>

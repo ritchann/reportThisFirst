@@ -5,6 +5,7 @@ import { faCheckSquare } from '@fortawesome/free-regular-svg-icons/faCheckSquare
 import { faArrowAltCircleUp } from '@fortawesome/free-regular-svg-icons/faArrowAltCircleUp';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons/faCheckCircle';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons/faCalendar';
+import { faFileAlt } from '@fortawesome/free-regular-svg-icons/faFileAlt';
 //solid
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
@@ -20,6 +21,8 @@ import { faCloudUploadAlt } from  '@fortawesome/free-solid-svg-icons/faCloudUplo
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { SpaceProps } from './utils/spaceUtil';
+
 library.add(
   //regular
   faSquare,
@@ -27,6 +30,7 @@ library.add(
   faArrowAltCircleUp,
   faCheckCircle,
   faCalendar,
+  faFileAlt,
   //solid
   faAngleRight,
   faBars,
@@ -58,7 +62,8 @@ export type ImportedIcon =
   | 'calendar'
   | 'user-friends'
   | 'filter'
-  | 'cloud-upload-alt';
+  | 'cloud-upload-alt'
+  | 'file-alt';
 
 export interface Props extends React.HTMLAttributes<any> {
   className?: string;
@@ -68,5 +73,5 @@ export interface Props extends React.HTMLAttributes<any> {
 }
 
 export const Icon: React.FC<Props> = ({ prefix = 'fas', name, spin, className, ...other }) => {
-  return <FontAwesomeIcon icon={[prefix, name]} spin={spin} {...other}></FontAwesomeIcon>;
+  return <FontAwesomeIcon icon={[prefix, name]} spin={spin} className={className} {...other}></FontAwesomeIcon>;
 };
