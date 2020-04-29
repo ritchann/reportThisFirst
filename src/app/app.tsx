@@ -18,8 +18,7 @@ export const App: React.FC = () => {
       </div>
       <div className="main-container">
         <Switch>
-          <Route path="/applications" component={Applications} />
-          <Route path="/edit/:id" render={props => <EditPage {...props}></EditPage>}></Route>
+          <Route path="/edit/:id" render={props => <EditPage {...props}></EditPage>} />
           <Route path="/map" component={MapPage} />
           <Route path="/files" component={Files} />
           <Route path="/workers" component={Workers} />

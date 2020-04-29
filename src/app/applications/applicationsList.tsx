@@ -13,7 +13,6 @@ import { useApplications } from './hooks/useApplications';
 import './applicationsList.scss';
 
 export const ApplicationsList: React.FC = () => {
-  const dispatch = useDispatch();
   const getApplications = useApplications(true);
 
   const { eventList: list, currentMode: mode, filter } = useSelector((state: StoreType) => state.event);

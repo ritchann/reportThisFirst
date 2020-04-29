@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import classnames from 'classnames';
 import { Line, Icon } from 'shared/base';
 import { ServiceType } from 'data/enum';
 import { Card, EditButton, DeleteButton } from 'shared/components';
 import { DateTime } from 'shared/base/utils/dateTime';
+import { useSelector } from 'react-redux';
+import { StoreType } from 'core/store';
 
 import { DeleteDialog } from './deleteDialog';
 import './archive.scss';
 
-const files = [
-  { title: 'Плановые отключения воды', date: new Date(), type: ServiceType.Water },
+type FileType = {
+  title: string;
+  date: Date;
+  type: string;
+}
+
+const filesOriginal: FileType[] = [
+  { title: "Плановые отключения воды", date: new Date(), type: ServiceType.Water },
   { title: 'Плановые отключения электричества', date: new Date(), type: ServiceType.Electricity },
   { title: 'Плановые отключения газа', date: new Date(), type: ServiceType.Gas },
   { title: 'Плановые отключения воды', date: new Date(), type: ServiceType.Water }
@@ -17,6 +25,27 @@ const files = [
 
 export const Archive: React.FC = () => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [files, setFiles] = useState<FileType[]>([]);
+
+  const filter = useSelector((state: StoreType) => state.files.filter);
+
+  const onHandleFiles = useCallback((files: FileType[]) => {
+    const types: string[] = [];
+    if (filter.isElectricity) types.push(ServiceType.Electricity);
+    if (filter.isGas) types.push(ServiceType.Gas);
+    if (filter.isHeat) types.push(ServiceType.Heat);
+    if (filter.isWater) types.push(ServiceType.Water);
+
+    let newEvents = [...files];
+    if (types.length > 0) newEvents = newEvents.filter(x => types.includes(x.type));
+    return newEvents;
+  }, [filter]);
+
+  useEffect(() => {
+    let result: FileType[] = [...filesOriginal];
+    const handledResult = onHandleFiles(result);
+    setFiles(handledResult);
+  }, [onHandleFiles]);
 
   return (
     <>

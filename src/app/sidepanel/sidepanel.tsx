@@ -22,11 +22,10 @@ export const Sidepanel: React.FC = () => {
 
   const menu = useMemo(() => {
     const innerMenu: LinkItem[] = [
-      { type: 'link', title: 'Заявки', icon: 'bars', to: '/applications' },
+      { type: 'link', title: 'Заявки', icon: 'bars', to: '/' },
       { type: 'link', title: 'Карта', icon: 'map-marker-alt', to: '/map' },
       { type: 'link', title: 'Плановые отключения', icon: 'calendar', prefix: 'far', to: '/files' },
-      { type: 'link', title: 'Рабочие', icon: 'user-friends', prefix: 'fas', to: '/workers' },
-      { type: 'link', title: 'Выйти', icon: 'sign-out-alt', to: '/' }
+      { type: 'link', title: 'Рабочие', icon: 'user-friends', prefix: 'fas', to: '/workers' }
     ];
     return innerMenu;
   }, []);
@@ -50,8 +49,7 @@ export const Sidepanel: React.FC = () => {
               key={itemKey}
               to={item.to}
               className={classNames({
-                active: item === activeItem,
-                logout: item.title === 'Выйти'
+                active: item === activeItem
               })}>
               <SidepanelItem icon={item.icon} prefix={item.prefix} />
             </Link>
