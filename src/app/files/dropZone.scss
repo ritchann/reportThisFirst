@@ -1,4 +1,4 @@
-@import 'app/constants.scss';
+@import "app/constants.scss";
 
 .dropZone {
   height: 10em;
@@ -10,4 +10,8 @@
   .text {
     color: $dark-grey;
   }
+}
+
+.dropZone.drag-over {
+  background-color: $light-grey;
 }

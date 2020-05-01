@@ -11,6 +11,13 @@ interface Props extends SpaceProps {
   justifyContent?: 'start' | 'end' | 'center' | 'between' | 'around';
   alignItems?: 'start' | 'end' | 'center' | 'baseline' | 'stretch';
   onClick?: (value: any) => any;
+  draggable?: boolean;
+  onDragOver?: (e: any) => void;
+  onDragLeave?: (e: any) => void;
+  onDrop?: (e: any) => void;
+  onDragStart?: (e: any) => void;
+  onDragEnd?: (e: any) => void;
+  onDragEnter?: (e: any) => void;
 }
 
 export const Line: React.FC<Props> = ({
