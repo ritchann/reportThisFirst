@@ -7,11 +7,13 @@ import "./card.scss";
 interface Props {
   className?: string;
   onClick?: () => void;
+  justifyContent?: 'start' | 'end' | 'center' | 'between' | 'around';
+  alignItems?: 'start' | 'end' | 'center' | 'baseline' | 'stretch'; 
 }
 
-export const Card: React.FC<Props> = ({ className, children, onClick }) => {
+export const Card: React.FC<Props> = ({ className, children, onClick, ...other }) => {
   return (
-    <Line className={classnames('card', className)} onClick={onClick}>
+    <Line className={classnames('card', className)} onClick={onClick} {...other}>
       {children}
     </Line>
   );

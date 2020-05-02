@@ -1,0 +1,36 @@
+@import "app/constants.scss";
+
+.workersPage {
+  margin-top: 4em;
+  .main-container {
+    padding-left: 4em;
+    padding-right: 2em;
+    .header {
+      border-bottom: 2px solid $light-grey;
+    }
+    .add {
+      font-size: 0.75em;
+      color: $dark-grey;
+      margin-right: 0.5em;
+    }
+    .cards-container {
+      height: 38em;
+      padding: 0.5em;
+      overflow-y: scroll;
+      .card {
+        padding: 2em;
+        height: 8em;
+        margin-bottom: 1em;
+        .info-container {
+          width: 90%;
+          .name {
+            font-size: 1.3em;
+          }
+        }
+      }
+    }
+  }
+  .filter {
+    width: 15em;
+  }
+}
