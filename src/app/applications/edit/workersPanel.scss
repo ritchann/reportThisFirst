@@ -10,13 +10,23 @@
     .label {
       color: $dark-grey;
     }
+    .filter-icon {
+      cursor: pointer;
+    }
+    .active {
+      color: $dark-grey;
+    }
   }
   .cards-container {
+    overflow-y: scroll;
+    height: 33.5em;
+    padding-left: 0.5em;
+    padding-bottom: 0.5em;
     .workerCard {
       cursor: pointer;
       margin-top: 1em;
-      width: 90%;
-      height: 5em;
+      width: 95%;
+      height: 6em;
       padding: 0.9em;
       .fullSize {
         width: 100%;
@@ -25,18 +35,26 @@
         border-radius: 10px;
         width: 1em;
         height: 1em;
-        background-color: $electricity;
         margin-right: 1.5em;
         margin-left: 1em;
       }
       .info {
-        margin-right: 6em;
+        width: 75%;
         .name {
           font-size: 1.1em;
         }
-        .type {
+        .profession {
           font-weight: lighter;
         }
+      }
+      .icon {
+        font-size: 1.4em;
+      }
+      .checked {
+        color: $dark-grey;
+      }
+      .unchecked {
+        color: $grey;
       }
     }
   }

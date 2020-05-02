@@ -6,6 +6,7 @@ import { faArrowAltCircleUp } from '@fortawesome/free-regular-svg-icons/faArrowA
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons/faCheckCircle';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons/faCalendar';
 import { faFileAlt } from '@fortawesome/free-regular-svg-icons/faFileAlt';
+import { faCircle } from '@fortawesome/free-regular-svg-icons/faCircle';
 //solid
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
 import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
@@ -30,6 +31,7 @@ library.add(
   faCheckCircle,
   faCalendar,
   faFileAlt,
+  faCircle,
   //solid
   faAngleRight,
   faBars,
@@ -64,7 +66,8 @@ export type ImportedIcon =
   | 'filter'
   | 'cloud-upload-alt'
   | 'file-alt'
-  | 'angle-up';
+  | 'angle-up'
+  | 'circle';
 
 export interface Props extends React.HTMLAttributes<any> {
   className?: string;

@@ -6,15 +6,16 @@ import { propsToSpace, SpaceProps } from 'shared/base/utils/spaceUtil';
 interface Props extends SpaceProps {
   onClick?: () => void;
   small?: boolean;
+  text?: string;
 }
 
-export const ApproveButton: React.FC<Props> = ({ onClick, small, ...other }) => {
+export const ApproveButton: React.FC<Props> = ({ onClick, small, text, ...other }) => {
   const classes = classNames('approveButton btn-outline-primary button',
     propsToSpace(other),
     { 'btn-sm': small });
   return (
     <Button onClick={onClick} className={classes}>
-      Подтвердить
+      {text ?? 'Подтвердить'}
     </Button>
   );
 };

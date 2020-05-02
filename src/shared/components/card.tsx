@@ -6,11 +6,12 @@ import "./card.scss";
 
 interface Props {
   className?: string;
+  onClick?: () => void;
 }
 
-export const Card: React.FC<Props> = ({ className, children }) => {
+export const Card: React.FC<Props> = ({ className, children, onClick }) => {
   return (
-    <Line className={classnames('card', className)}>
+    <Line className={classnames('card', className)} onClick={onClick}>
       {children}
     </Line>
   );

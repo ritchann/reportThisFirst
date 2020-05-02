@@ -10,7 +10,6 @@ import { WorkersPanel } from './workersPanel';
 import './editPage.scss';
 
 export const EditPage: React.FC = (props) => {
-
   const events = useSelector((state: StoreType) => state.event.eventList);
 
   const [event, setEvent] = useState<EventType>();

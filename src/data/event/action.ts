@@ -21,3 +21,5 @@ export const updateEventAsync = createAction<{
 }>(ActionType.EVENT_UPDATEVENTASYNC);
 
 export const setFilter = createAction<FilterType>(ActionType.EVENT_SETFILTER);
+
+export const setWorkersFilter = createAction<{ isApplied: boolean }>(ActionType.EVENT_SETWORKERFILTER);
