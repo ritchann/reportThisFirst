@@ -21,7 +21,9 @@ const filesOriginal: FileType[] = [
   { title: "Плановые отключения воды", date: new Date(2020, 0, 5), type: ServiceType.Water },
   { title: 'Плановые отключения электричества', date: new Date(2020, 1, 5), type: ServiceType.Electricity },
   { title: 'Плановые отключения газа', date: new Date(2020, 2, 5), type: ServiceType.Gas },
-  { title: 'Плановые отключения воды', date: new Date(2020, 3, 5), type: ServiceType.Water }
+  { title: 'Плановые отключения воды', date: new Date(2020, 3, 5), type: ServiceType.Water },
+  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
+  { title: 'Плановые отключения воды', date: new Date(2020, 5, 5), type: ServiceType.Water }
 ];
 
 export const Archive: React.FC = () => {

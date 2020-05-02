@@ -48,3 +48,16 @@ $input-btn-focus-width: 0.1em;
 .card {
   border-radius: 1em;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
