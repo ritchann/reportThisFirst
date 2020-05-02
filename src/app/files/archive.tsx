@@ -83,33 +83,35 @@ export const Archive: React.FC = () => {
             }
           </Line>
         </Line>
-        <Line className="files-archive" vertical>
-          {files.map((file, i) => {
-            return (
-              <Card key={i} className="file-card">
-                <Line className="card-container" justifyContent="between" alignItems="center">
-                  <Line>
-                    <div className='icon'>
-                      <Icon name="file-alt" prefix="far" className={classnames({
-                        'electricity-icon': file.type === ServiceType.Electricity,
-                        'water-icon': file.type === ServiceType.Water,
-                        'gas-icon': file.type === ServiceType.Gas
-                      })}></Icon>
-                    </div>
-                    <Line vertical ml="4" mt="2">
-                      <div className="title">{file.title}</div>
-                      <div className="lighter-text">{DateTime.format(new Date(file.date))}</div>
+        <div className="files-archive">
+          <Line vertical>
+            {files.map((file, i) => {
+              return (
+                <Card key={i} className="file-card">
+                  <Line className="card-container" justifyContent="between" alignItems="center">
+                    <Line>
+                      <div className='icon'>
+                        <Icon name="file-alt" prefix="far" className={classnames({
+                          'electricity-icon': file.type === ServiceType.Electricity,
+                          'water-icon': file.type === ServiceType.Water,
+                          'gas-icon': file.type === ServiceType.Gas
+                        })}></Icon>
+                      </div>
+                      <Line vertical ml="4" mt="2">
+                        <div className="title">{file.title}</div>
+                        <div className="lighter-text">{DateTime.format(new Date(file.date))}</div>
+                      </Line>
+                    </Line>
+                    <Line vertical mr="4">
+                      <EditButton small mb="2" header="Скачать" />
+                      <DeleteButton small onClick={() => setShowDeleteDialog(true)} />
                     </Line>
                   </Line>
-                  <Line vertical mr="4">
-                    <EditButton small mb="2" header="Скачать" />
-                    <DeleteButton small onClick={() => setShowDeleteDialog(true)} />
-                  </Line>
-                </Line>
-              </Card>
-            );
-          })}
-        </Line>
+                </Card>
+              );
+            })}
+          </Line>
+        </div>
       </Line>
       {showDeleteDialog && <DeleteDialog onClose={() => setShowDeleteDialog(false)} />}
     </>
