@@ -17,11 +17,10 @@ import { faAngleDown } from  '@fortawesome/free-solid-svg-icons/faAngleDown';
 import { faUserFriends } from  '@fortawesome/free-solid-svg-icons/faUserFriends';
 import { faFilter } from  '@fortawesome/free-solid-svg-icons/faFilter';
 import { faCloudUploadAlt } from  '@fortawesome/free-solid-svg-icons/faCloudUploadAlt';
+import { faAngleUp } from  '@fortawesome/free-solid-svg-icons/faAngleUp';
 //
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { SpaceProps } from './utils/spaceUtil';
 
 library.add(
   //regular
@@ -41,7 +40,8 @@ library.add(
   faArrowRight,
   faUserFriends,
   faFilter,
-  faCloudUploadAlt
+  faCloudUploadAlt,
+  faAngleUp
 );
 
 export type ImportedIcon =
@@ -63,7 +63,8 @@ export type ImportedIcon =
   | 'user-friends'
   | 'filter'
   | 'cloud-upload-alt'
-  | 'file-alt';
+  | 'file-alt'
+  | 'angle-up';
 
 export interface Props extends React.HTMLAttributes<any> {
   className?: string;

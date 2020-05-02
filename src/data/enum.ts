@@ -26,3 +26,8 @@ export enum Visibility {
   Pending = 'pending',
   Actual = 'actual'
 }
+
+export enum Sort {
+  First = 0,
+  Last = 1
+}
