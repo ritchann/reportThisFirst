@@ -10,7 +10,7 @@ import './files.scss';
 export const Files: React.FC = () => {
   return (
     <Line className="files">
-      <Line className="main-container" vertical>
+      <Line className="content" vertical>
         <Line className="title" pb="4">Плановые отключения</Line>
         <DropZone />
         <Archive />

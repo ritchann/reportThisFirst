@@ -17,10 +17,11 @@ $input-btn-focus-width: 0.1em;
 
 #root {
   margin: 0;
+  font-size: 18px;
 }
 
 .btn-sm {
-  font-size: 0.9em;
+  font-size: 0.95em;
   font-weight: lighter;
   width: 7rem;
 }
@@ -39,7 +40,7 @@ $input-btn-focus-width: 0.1em;
 }
 
 .bolder-text {
-  font-weight: bolder;
+  font-weight: 500;
 }
 .lighter-text {
   font-weight: lighter;

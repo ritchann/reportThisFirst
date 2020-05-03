@@ -4,5 +4,6 @@ import { SelectBaseField } from './selectBaseField';
 import { SelectField } from './selectField';
 import { SimpleSelectField } from './simpleSelectField';
 import { TextBoxField } from './textBoxField';
+import { MultiselectField } from './multiselectField';
 
-export { DateInputField, InputField, SelectBaseField, SelectField, SimpleSelectField, TextBoxField };
+export { DateInputField, InputField, SelectBaseField, SelectField, SimpleSelectField, TextBoxField, MultiselectField };

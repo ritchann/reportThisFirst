@@ -5,7 +5,7 @@ import { FilterPanel } from 'app/applications/filterPanel';
 
 export const Applications: React.FC = () => {
   return (
-    <Line mt="4">
+    <Line className="main-container" mt="4">
       <ApplicationsList />
       <FilterPanel />
     </Line>

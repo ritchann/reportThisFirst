@@ -16,19 +16,15 @@ export const EditPage: React.FC = (props) => {
 
   useEffect(() => {
     const id = (props as any).match.params.id;
-    const e = events.find(x => x.id == id);
+    const e = events.find((x) => x.id == id);
     setEvent(e);
   }, [props, events]);
-
-  const onChange = useCallback((field: keyof EventType, value: boolean | Date | string) => {
-    setEvent({ ...event, [field]: value });
-  }, [event]);
 
   return (
     <div className="editPage">
       <Line className="title">Редактирование заявки</Line>
       <Line>
-        <EditForm />
+        <EditForm originalEvent={event} />
         <WorkersPanel />
       </Line>
     </div>

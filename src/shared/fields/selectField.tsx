@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactChild } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { SelectBaseField } from './selectBaseField';
 
 interface Props<TOption extends object | string | number> {
+  getContent?: (option: TOption) => ReactChild;
   options: Map<string, TOption>;
   getLabel: (option: TOption) => string;
   onChange: (option: string) => void;
@@ -17,10 +18,12 @@ interface Props<TOption extends object | string | number> {
   disable?: boolean;
   name?: string;
   showSearch?: boolean;
-  admitEmptyOption?: boolean;
+  admitRemove?: boolean;
+  inline?: boolean;
 }
 
 export const SelectField = <TOption extends object | string | number>({
+  getContent,
   options,
   getLabel,
   onChange,
@@ -30,7 +33,8 @@ export const SelectField = <TOption extends object | string | number>({
   showSearch,
   disable,
   disabledOptions,
-  admitEmptyOption,
+  admitRemove,
+  inline,
   ...other
 }: Props<TOption>) => {
   const [message, setMessage] = useState(null);
@@ -55,6 +59,8 @@ export const SelectField = <TOption extends object | string | number>({
   return (
     <>
       <SelectBaseField
+        inline={inline}
+        getContent={getContent}
         options={options}
         getLabel={getLabel}
         onChange={(options: string | string[]) => onChange(options as string)}
@@ -62,7 +68,7 @@ export const SelectField = <TOption extends object | string | number>({
         showSearch={showSearch}
         disable={disable}
         disabledOptions={disabledOptions}
-        admitEmptyOption={admitEmptyOption}
+        admitRemove={admitRemove}
         {...other}></SelectBaseField>
       <div className="invalid-feedback">{message}</div>
     </>

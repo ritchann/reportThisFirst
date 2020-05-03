@@ -19,7 +19,7 @@
   }
   .cards-container {
     overflow-y: scroll;
-    height: 33.5em;
+    height: 80vh;
     padding-left: 0.5em;
     padding-bottom: 0.5em;
     .workerCard {
@@ -31,15 +31,16 @@
       .fullSize {
         width: 100%;
       }
-      .label {
-        border-radius: 10px;
-        width: 1em;
-        height: 1em;
-        margin-right: 1.5em;
-        margin-left: 1em;
+      .label-container {
+        width: 25%;
+        .label {
+          border-radius: 10px;
+          width: 1em;
+          height: 1em;
+          margin-left: 0.5em;
+        }
       }
       .info {
-        width: 75%;
         .name {
           font-size: 1.1em;
         }
@@ -49,6 +50,7 @@
       }
       .icon {
         font-size: 1.4em;
+        margin: 0 0.5em;
       }
       .checked {
         color: $dark-grey;

@@ -4,7 +4,7 @@ import { StoreType } from 'core/store';
 import { FilterType } from 'data/event/model';
 import { setFilter } from 'data/event/action';
 import { Line, Block, Checkbox } from 'shared/base';
-import { DateInputField, SimpleSelectField } from 'shared/fields';
+import { DateInputField, SelectField } from 'shared/fields';
 import { priority, status } from 'app/common/translations';
 
 import 'app/common/filterPanel.scss';
@@ -16,11 +16,14 @@ export const FilterPanel: React.FC = () => {
 
   const onChangeFilter = useCallback(
     (field: keyof FilterType, value: boolean | Date | string) => {
-      dispatch(setFilter({ ...filter, [field]: value }));
-    }, [dispatch, filter]);
+      const v = value === ' ' ? undefined : value;
+      dispatch(setFilter({ ...filter, [field]: v }));
+    },
+    [dispatch, filter]
+  );
 
   return (
-    <Line pr="4" mt="5" vertical className="filter-panel">
+    <Line pr="4" vertical className="filter-panel">
       <Block className="title" mt="2">
         Фильтры
       </Block>
@@ -44,31 +47,35 @@ export const FilterPanel: React.FC = () => {
         text="Теплоснабжение"
         value={filter.isHeat}
         onChange={(v: boolean) => onChangeFilter('isHeat', v)}></Checkbox>
-      <Block mt="4">
-        <DateInputField value={filter.date}
-          onChange={(v: Date) => onChangeFilter('date', v)}></DateInputField>
+      <Block className="title" mt="4">
+        Дата
       </Block>
-      <Block className="title" mt="2">
+      <Block mt="2">
+        <DateInputField value={filter.date} onChange={(v: Date) => onChangeFilter('date', v)}></DateInputField>
+      </Block>
+      <Block className="title" mt="1">
         Статус
       </Block>
       <Block mt="2">
-        <SimpleSelectField
-          addEmptyOption
-          getLabel={x => x}
-          name="Status"
+        <SelectField
+          admitRemove
+          getLabel={(x) => x.toString()}
           options={status}
           value={filter.status}
-          onChange={(v: string) => onChangeFilter('status', v)}></SimpleSelectField>
+          name="Status"
+          onChange={(v: string) => onChangeFilter('status', v)}></SelectField>
       </Block>
-      <Block className="title">Уровень</Block>
+      <Block className="title" mt="3">
+        Уровень
+      </Block>
       <Block mt="2">
-        <SimpleSelectField
-          addEmptyOption
-          getLabel={x => x}
-          name="Priority"
+        <SelectField
+          admitRemove
+          getLabel={(x) => x.toString()}
           options={priority}
           value={filter.level}
-          onChange={(v: string) => onChangeFilter('level', v)}></SimpleSelectField>
+          name="Priority"
+          onChange={(v: string) => onChangeFilter('level', v)}></SelectField>
       </Block>
     </Line>
   );

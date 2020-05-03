@@ -30,3 +30,10 @@ export interface FilterType {
   status?: string;
   level?: string;
 }
+
+export interface WorkerFilterType {
+  type: string[];
+  schedule: string[];
+  employement: string[];
+  experience: string[];
+}

@@ -1,9 +1,10 @@
 .editForm {
   width: 65%;
-  height: 100%;
   margin-top: 2em;
   margin-right: 2em;
-  padding: 3em;
+  padding: 2em;
+  height: 90%;
+  font-size: 0.8em;
   .fullStroke {
     width: 100%;
   }
@@ -28,6 +29,10 @@
   }
   .address {
     padding-top: 1.5em;
+  }
+  .buttons > * {
+    font-weight: lighter;
+    padding: 0.25em 0.5em;
   }
 }
 

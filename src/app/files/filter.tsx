@@ -7,7 +7,6 @@ import { setFilter } from 'data/files/action';
 import { FilterType } from 'data/files/model';
 
 import 'app/common/filterPanel.scss';
-import './filter.scss';
 
 export const Filter: React.FC = () => {
   const dispatch = useDispatch();

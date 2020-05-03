@@ -40,25 +40,31 @@ export const WorkersPanel: React.FC = () => {
               const x = people[key];
               return (
                 <Card key={key} className="workerCard" onClick={() => onChangeCheck(key)}>
-                  <Line className="fullSize" alignItems="center">
-                    <div className={classnames('label', {
-                      gas: x.type == ServiceType.Gas,
-                      electricity: x.type == ServiceType.Electricity,
-                      water: x.type == ServiceType.Water,
-                      heat: x.type == ServiceType.Heat
-                    })}></div>
-                    <Line vertical className="info">
-                      <Line className="name">{x.name}</Line>
-                      <Line className="profession">{x.profession}</Line>
+                  <Line className="fullSize" alignItems="center" justifyContent="between">
+                    <Line alignItems="center">
+                      <div className="label-container">
+                      <div className={classnames('label', {
+                        gas: x.type == ServiceType.Gas,
+                        electricity: x.type == ServiceType.Electricity,
+                        water: x.type == ServiceType.Water,
+                        heat: x.type == ServiceType.Heat
+                      })}></div>
+                      </div>
+                      <Line vertical className="info">
+                        <Line className="name">{x.name}</Line>
+                        <Line className="profession">{x.profession}</Line>
+                      </Line>
                     </Line>
-                    {x.checked ?
-                      (<div className="icon checked">
-                        <Icon prefix="far" name="check-circle"></Icon>
-                      </div>)
-                      :
-                      (<div className="icon unchecked">
-                        <Icon prefix="far" name="circle"></Icon>
-                      </div>)}
+                    <Line>
+                      {x.checked ?
+                        (<div className="icon checked">
+                          <Icon prefix="far" name="check-circle"></Icon>
+                        </div>)
+                        :
+                        (<div className="icon unchecked">
+                          <Icon prefix="far" name="circle"></Icon>
+                        </div>)}
+                    </Line>
                   </Line>
                 </Card>);
             })}

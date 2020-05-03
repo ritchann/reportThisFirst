@@ -1,12 +1,14 @@
-import React, { useMemo, useState, useCallback, useRef } from 'react';
+import React, { useMemo, useState, useCallback, useRef, ReactChild } from 'react';
 import classNames from 'classnames';
 import { DropdownItem } from 'shared/base/dropdownItem';
 import { Line } from 'shared/base/line';
 import { Icon } from 'shared/base/icon';
+import { usePopper } from 'core/usePopper';
 
 import './selectBaseField.scss';
 
 interface Props<TOption extends object | string | number> {
+  getContent?: (option: TOption) => ReactChild;
   label?: string;
   size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'auto';
   className?: string;
@@ -18,7 +20,14 @@ interface Props<TOption extends object | string | number> {
   showSearch?: boolean;
   disable?: boolean;
   disabledOptions?: (key: string) => boolean;
-  admitEmptyOption?: boolean;
+  admitRemove?: boolean;
+  onRemove?: () => void;
+  noWrap?: boolean;
+  alwaysShow?: boolean;
+  onDeactivated?: () => void;
+  isCell?: boolean;
+  inline?: boolean;
+  dragAndDrop?: boolean;
 }
 
 export const SelectBaseField = <TOption extends object | string | number>({
@@ -33,7 +42,15 @@ export const SelectBaseField = <TOption extends object | string | number>({
   showSearch = false,
   disable = false,
   disabledOptions,
-  admitEmptyOption
+  admitRemove,
+  onRemove,
+  noWrap = false,
+  alwaysShow = false,
+  onDeactivated,
+  isCell,
+  getContent,
+  inline,
+  dragAndDrop = false
 }: Props<TOption>) => {
   if (multiselect && !Array.isArray(value)) {
     value = [];
@@ -41,8 +58,23 @@ export const SelectBaseField = <TOption extends object | string | number>({
     value = '';
   }
 
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(alwaysShow);
   const [inputValue, setInputValue] = useState<string>('');
+  const { reference, popper } = usePopper({
+    onUpdate: data => {
+      if (data.hide === true) {
+        deactivate();
+      }
+    },
+    positionFixed: true,
+    placement: 'bottom-start',
+    modifiers: {
+      preventOverflow: { enabled: true, priority: ['left', 'right'], boundariesElement: 'scrollParent' },
+      hide: {
+        enabled: true
+      }
+    }
+  });
 
   const filter = useMemo(() => {
     const filter = new Map<string, TOption>();
@@ -86,75 +118,172 @@ export const SelectBaseField = <TOption extends object | string | number>({
             selected: !multiselect ? value == key : value?.includes(key)
           })}
           disabled={disabledOptions ? disabledOptions(key) : false}>
-          {getLabel(option)}
+          {getContent ? (
+            <Line alignItems="center">
+              {getContent(option)}
+              {getLabel(option)}
+            </Line>
+          ) : (
+            getLabel(option)
+          )}
         </DropdownItem>
       );
     });
     return list;
-  }, [disabledOptions, filter, getLabel, multiselect, onSelectCallback, value]);
+  }, [disabledOptions, filter, getContent, getLabel, multiselect, onSelectCallback, value]);
+
+  const [dnd, setDnd] = useState<{ from: string; to?: string }>();
+
+  const onDropCallback = useCallback(
+    (from: string, to?: string | undefined) => {
+      if (to) {
+        const val = (value as string[]) ?? [];
+        const newState = new Array(...val);
+        newState.splice(val.indexOf(from), 1);
+        newState.splice(val.indexOf(to), 0, from);
+        onChange(newState);
+        setInputValue('');
+      }
+    },
+    [onChange, value]
+  );
 
   const optionsBoxes = useMemo(() => {
     if (!multiselect) {
       const val = value as string;
       const option = options.get(val);
-      return <div key={val}>{option ? getLabel(option) : ''}</div>;
+      return (
+        <div key={val}>
+          {option ? (
+            getContent ? (
+              <Line alignItems="center">
+                {getContent(option)}
+                {getLabel(option)}
+              </Line>
+            ) : (
+              getLabel(option)
+            )
+          ) : (
+            ''
+          )}
+        </div>
+      );
     } else {
       const val = (value as string[]) ?? [];
       return val.map(x => {
         const option = options.get(x);
         return (
-          <div key={x} className={classNames('box')}>
-            {option ? getLabel(option) : ''}
-            <Icon name="angle-right" className="icon" onClick={() => onSelectCallback(x)}></Icon>
+          <div
+            draggable={dragAndDrop && multiselect && !disable}
+            onDragStart={e => {
+              e.stopPropagation();
+              setDnd({ from: x });
+            }}
+            onDragEnd={() => setDnd(undefined)}
+            onDragEnter={() => {
+              if (dnd !== undefined && dnd.from !== x) setDnd({ ...dnd, to: x });
+            }}
+            onDragOver={e => {
+              if (dnd !== undefined && dnd.from !== x) e.preventDefault();
+            }}
+            onDrop={() => {
+              if (dnd !== undefined && dnd.from !== x) onDropCallback(dnd.from, dnd.to);
+            }}
+            onClick={e => {
+              e.stopPropagation();
+            }}
+            key={x}
+            className={classNames('box', dnd?.to === x ? 'box-drag-over' : 'box-regular')}>
+            {option ? (
+              getContent ? (
+                <Line alignItems="center">
+                  {getContent(option)}
+                  {getLabel(option)}
+                </Line>
+              ) : (
+                <Line>{x}</Line>
+              )
+            ) : (
+              ''
+            )}
+            <div className={classNames('icon-display', { 'icon-hover': !disable })}>
+              <Icon
+                name="times"
+                className="icon"
+                onClick={() => {
+                  if (!disable) onSelectCallback(x);
+                }}></Icon>
+            </div>
           </div>
         );
       });
     }
-  }, [getLabel, multiselect, onSelectCallback, options, value]);
+  }, [disable, dnd, dragAndDrop, getContent, getLabel, multiselect, onDropCallback, onSelectCallback, options, value]);
 
   const focusHolder = useRef<any>(null);
+  const timeoutRef = useRef<any>(null);
   const activate = (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
-    setShow(true);
-    if (!showSearch && !disable) focusHolder.current.focus();
+    setTimeout(() => {
+      setShow(true);
+      clearTimeout(timeoutRef.current);
+      if (!showSearch && !disable) focusHolder.current.focus();
+    });
   };
-  const deactivate = () => setShow(false);
-
+  const deactivate = () => {
+    timeoutRef.current = setTimeout(() => {
+      setShow(false);
+      if (onDeactivated) onDeactivated();
+    });
+  };
   return (
-    <div className={classNames('multiselect', { [`col-md-${size}`]: size != null }, className)}>
+    <div className={classNames('multiselect', { [`col-md-${size}`]: size != null, ' inline': inline }, className)}>
       {label && <label className="label">{label}</label>}
       <div
         className={classNames('container form-control', {
           disable,
-          active: !disable && show
+          active: !disable && show,
+          cell: isCell
         })}
         onMouseDown={disable ? undefined : activate}
-        onBlur={deactivate}
+        onBlurCapture={deactivate}
         tabIndex={0}
         role="button"
-        ref={focusHolder}>
-        <Line justifyContent="between" alignItems="center" className="content">
-          <Line wrap>{optionsBoxes}</Line>
+        ref={e => {
+          focusHolder.current = e;
+          reference.current = e;
+        }}>
+        <Line justifyContent="between" alignItems="center" className={isCell ? 'content cell' : 'content'}>
+          <Line className={noWrap ? 'word-hidden' : undefined} wrap>
+            {optionsBoxes}
+          </Line>
           <div className="icons">
-            {admitEmptyOption && (
-              <div className="cross" onClick={() => onSelectCallback(' ')}>
+            {admitRemove && (
+              <div
+                className={classNames('cross', {
+                  cell: isCell,
+                  'cross-enabled': !disable
+                })}
+                style={isCell ? { borderRight: 'none' } : { borderRight: 'solid $light-grey 2px' }}
+                onClick={disable ? () => {} : onRemove ? onRemove : () => onSelectCallback(' ')}>
                 <Icon name="times" className="icon"></Icon>
               </div>
             )}
             {multiselect && options?.size > 0 && (
               <div
-                className="cross"
-                onClick={() => (value?.length != 0 ? onChange([]) : onChange(Array.from(options).map(([key]) => key)))}>
-                {<Icon name={value?.length != 0 ? 'times' : 'arrow-right'} className="icon"></Icon>}
+                className={classNames('cross', { 'cross-enabled': !disable })}
+                onClick={() => {
+                  if (!disable) value?.length != 0 ? onChange([]) : onChange(Array.from(options).map(([key]) => key));
+                }}>
+                {<Icon name={value?.length != 0 ? 'times' : 'check'} className="icon"></Icon>}
               </div>
             )}
-            <Icon name="angle-down" className="icon"></Icon>
+            {!isCell && <Icon name="angle-down" className="icon"></Icon>}
           </div>
         </Line>
         {show && (
           <div className="dropdown-container">
-            <div className="dropdown" onClick={!multiselect ? deactivate : undefined}>
+            <div ref={popper} className="dropdown" onClick={!multiselect ? deactivate : undefined}>
               {showSearch && (
                 <Line
                   className="input-container"
@@ -166,10 +295,12 @@ export const SelectBaseField = <TOption extends object | string | number>({
                     value={inputValue}
                     onChange={e => setInputValue(e.target.value)}
                     autoFocus></input>
-                  <Icon name="check-square" className="icon"></Icon>
+                  <Icon name="search" className="icon"></Icon>
                 </Line>
               )}
-              <div className="items">{optionsDropdown}</div>
+              <div onScroll={e => e.stopPropagation()} className="items">
+                {optionsDropdown}
+              </div>
             </div>
           </div>
         )}

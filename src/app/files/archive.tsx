@@ -23,6 +23,9 @@ const filesOriginal: FileType[] = [
   { title: 'Плановые отключения газа', date: new Date(2020, 2, 5), type: ServiceType.Gas },
   { title: 'Плановые отключения воды', date: new Date(2020, 3, 5), type: ServiceType.Water },
   { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
+  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
+  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
+  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
   { title: 'Плановые отключения воды', date: new Date(2020, 5, 5), type: ServiceType.Water }
 ];
 
