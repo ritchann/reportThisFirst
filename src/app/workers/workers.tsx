@@ -4,13 +4,14 @@ import { Line } from 'shared/base/line';
 import { workers } from 'app/common/workersBase';
 import { Card, EditButton, DeleteButton } from 'shared/components';
 import { ServiceType } from 'data/enum';
+import { Filter } from 'app/workers/filter';
 
 import './workers.scss';
 
 export const Workers: React.FC = () => {
   return (
     <Line className="workersPage">
-      <Line className="main-container" vertical>
+      <Line className="workers-list" vertical>
         <Line className="header" justifyContent="between" alignItems="center">
           <Line className="title" pb="3">Рабочие</Line>
           <Line className="add">
@@ -45,7 +46,7 @@ export const Workers: React.FC = () => {
           </Line>
         </div>
       </Line>
-      <div className="filter">Filter</div>
+      <Filter />
     </Line>
   );
 };

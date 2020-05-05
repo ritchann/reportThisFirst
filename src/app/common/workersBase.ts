@@ -8,8 +8,8 @@ export const workers: { [key: string]: Worker } = {
   2: { name: 'Петров Петр Петрович', profession: 'Сантехник', type: ServiceType.Water, checked: false },
   3: { name: 'Александров Александр Александрович', profession: 'Электрик', type: ServiceType.Electricity, checked: false },
   4: { name: 'Николаев Николай Николаевич', profession: 'Сантехник', type: ServiceType.Water, checked: false },
-  5: { name: 'Артемов Артем Артемович', profession: 'Сварщик', type: ServiceType.Gas, checked: false },
-  6: { name: 'Алексеев Алексей Алексеевич', profession: 'Электрик', type: ServiceType.Electricity, checked: false },
-  7: { name: 'Глебов Глеб Глебович', profession: 'Сантехник', type: ServiceType.Water, checked: false },
-  8: { name: 'Степанов Степан Степанович', profession: 'Сварщик', type: ServiceType.Gas, checked: false }
+  // 5: { name: 'Артемов Артем Артемович', profession: 'Сварщик', type: ServiceType.Gas, checked: false },
+  // 6: { name: 'Алексеев Алексей Алексеевич', profession: 'Электрик', type: ServiceType.Electricity, checked: false },
+  // 7: { name: 'Глебов Глеб Глебович', profession: 'Сантехник', type: ServiceType.Water, checked: false },
+  // 8: { name: 'Степанов Степан Степанович', profession: 'Сварщик', type: ServiceType.Gas, checked: false }
 };
