@@ -1,15 +1,53 @@
 import { ServiceType } from "data/enum";
+import { Employee } from "data/employee/model";
 
-type Worker = { name: string, profession: string, type: string, checked: boolean };
-
-export const workers: { [key: string]: Worker } = {
-  0: { name: 'Иванов Иван Иванович', profession: 'Электрик', type: ServiceType.Electricity, checked: true },
-  1: { name: 'Сергеев Сергей Сергеевич', profession: 'Сварщик', type: ServiceType.Gas, checked: false },
-  2: { name: 'Петров Петр Петрович', profession: 'Сантехник', type: ServiceType.Water, checked: false },
-  3: { name: 'Александров Александр Александрович', profession: 'Электрик', type: ServiceType.Electricity, checked: false },
-  4: { name: 'Николаев Николай Николаевич', profession: 'Сантехник', type: ServiceType.Water, checked: false },
-  // 5: { name: 'Артемов Артем Артемович', profession: 'Сварщик', type: ServiceType.Gas, checked: false },
-  // 6: { name: 'Алексеев Алексей Алексеевич', profession: 'Электрик', type: ServiceType.Electricity, checked: false },
-  // 7: { name: 'Глебов Глеб Глебович', profession: 'Сантехник', type: ServiceType.Water, checked: false },
-  // 8: { name: 'Степанов Степан Степанович', profession: 'Сварщик', type: ServiceType.Gas, checked: false }
+export const workers: { [key: string]: Employee } = {
+  0: { 
+    lastname: 'Иванов', 
+    firstname: 'Иван',
+    patronymic: 'Иванович', 
+    phone: '+7(999)999-99-99',
+    profession: 'электрик',
+    type: ServiceType.Electricity, 
+    schedule: '', 
+    experience: '',
+    employement: '',
+    checked: true 
+  },
+  1: { 
+    lastname: 'Алексеев', 
+    firstname: 'Алексей',
+    patronymic: 'Алексеевич', 
+    phone: '+7(999)999-99-99',
+    profession: 'сварщик',
+    type: ServiceType.Gas, 
+    schedule: '', 
+    experience: '',
+    employement: '',
+    checked: true 
+  },
+  2: { 
+    lastname: 'Петров', 
+    firstname: 'Петр',
+    patronymic: 'Петрович', 
+    phone: '+7(999)999-99-99',
+    profession: 'сантехник',
+    type: ServiceType.Water, 
+    schedule: '', 
+    experience: '',
+    employement: '',
+    checked: true 
+  },
+  3: { 
+    lastname: 'Николаев', 
+    firstname: 'Николай',
+    patronymic: 'Николаевич', 
+    phone: '+7(999)999-99-99',
+    profession: 'сварщик',
+    type: ServiceType.Gas, 
+    schedule: '', 
+    experience: '',
+    employement: '',
+    checked: true 
+  },
 };

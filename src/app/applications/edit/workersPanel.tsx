@@ -6,16 +6,16 @@ import { Line, Icon } from 'shared/base';
 import { Card } from 'shared/components';
 import { ServiceType } from 'data/enum';
 import { workers } from 'app/common/workersBase';
+import { Employee } from 'data/employee/model';
 
 import { WorkerFilter } from './workerFilter';
 import './workersPanel.scss';
 
-type Worker = { name: string, profession: string, type: string, checked: boolean };
 
 export const WorkersPanel: React.FC = () => {
   const filter = useSelector((state: StoreType) => state.event.workersFilter);
 
-  const [people, setPeople] = useState<{ [key: number]: Worker }>(workers);
+  const [people, setPeople] = useState<{ [key: number]: Employee }>(workers);
   const [showFilter, setShowFilter] = useState(false);
 
   const onChangeCheck = useCallback((id: string) => {
@@ -43,12 +43,12 @@ export const WorkersPanel: React.FC = () => {
                   <Line className="fullSize" alignItems="center" justifyContent="between">
                     <Line alignItems="center">
                       <div className="label-container">
-                      <div className={classnames('label', {
-                        gas: x.type == ServiceType.Gas,
-                        electricity: x.type == ServiceType.Electricity,
-                        water: x.type == ServiceType.Water,
-                        heat: x.type == ServiceType.Heat
-                      })}></div>
+                        <div className={classnames('label', {
+                          gas: x.type == ServiceType.Gas,
+                          electricity: x.type == ServiceType.Electricity,
+                          water: x.type == ServiceType.Water,
+                          heat: x.type == ServiceType.Heat
+                        })}></div>
                       </div>
                       <Line vertical className="info">
                         <Line className="name">{x.name}</Line>

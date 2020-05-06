@@ -4,12 +4,13 @@
   padding-left: 3em;
   margin-top: 2em;
   .workers-list {
-    padding-right: 2em;
+    padding-right: 3em;
     width: 80%;
     .header {
       padding-left: 0.5em;
     }
     .add {
+      cursor: pointer;
       font-size: 0.75em;
       color: $dark-grey;
       margin-right: 1.5em;
@@ -17,13 +18,18 @@
     .cards-container {
       padding: 0.5em 0.5em 0.5em 0.2em;
       .card {
-        padding: 2em;
-        height: 8em;
+        padding: 0.5em 2em;
         margin-bottom: 1em;
         .info-container {
           width: 90%;
           .name {
             font-size: 1.3em;
+          }
+          .type {
+            width: 50%;
+          }
+          .schedule {
+            width: 50%;
           }
         }
       }
