@@ -10,3 +10,13 @@ export interface Employee {
   employement: string,
   checked: boolean
 };
+
+export interface FilterType {
+  isElectricity: boolean;
+  isWater: boolean;
+  isGas: boolean;
+  isHeat: boolean;
+  experience?: string;
+  schedule?: string;
+  employement?: string;
+}
