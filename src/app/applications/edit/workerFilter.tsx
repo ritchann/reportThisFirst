@@ -26,7 +26,7 @@ export const WorkerFilter: React.FC<Props> = ({ onClose }) => {
   );
 
   return (
-    <Modal onCancel={onClose} footer={footer} size="lg" className="workerFilter" noHeight>
+    <Modal onCancel={onClose} footer={footer} className="workerFilter" noHeight>
       <Line vertical>
         <MultiselectField
           className="field"

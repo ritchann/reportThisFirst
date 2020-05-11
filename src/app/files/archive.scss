@@ -12,26 +12,18 @@
     }
   }
   .files-archive {
-    overflow-y: scroll;
-    height: 60vh;
     padding: 0 0.5em 0.75em 0.25em;
     .card {
       margin-top: 1em;
       height: 6em;
       .card-container {
         width: 100%;
-        .icon {
-          font-size: 3em;
-          margin-left: 0.5em;
-          .electricity-icon {
-            color: $electricity;
-          }
-          .water-icon {
-            color: $water;
-          }
-          .gas-icon {
-            color: $gas;
-          }
+        .label {
+          border-radius: 10px;
+          width: 1em;
+          height: 1em;
+          margin-right: 0.5em;
+          margin-left: 1em;
         }
         .title {
           font-size: 1.2em;

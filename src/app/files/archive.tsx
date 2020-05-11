@@ -1,39 +1,30 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
 import { Line, Icon } from 'shared/base';
 import { ServiceType, Sort } from 'data/enum';
-import { Card, EditButton, DeleteButton } from 'shared/components';
+import { Card, EditButton, DeleteButton, Pagination } from 'shared/components';
 import { DateTime } from 'shared/base/utils/dateTime';
 import { useSelector, useDispatch } from 'react-redux';
 import { StoreType } from 'core/store';
 import { setSort } from 'data/files/action';
+import { FileType } from 'data/files/model';
+import { files as filesOriginal } from 'app/common/filesBase';
+import { usePagination } from 'app/common/usePagination';
 
 import { DeleteDialog } from './deleteDialog';
 import './archive.scss';
 
-type FileType = {
-  title: string;
-  date: Date;
-  type: string;
-}
-
-const filesOriginal: FileType[] = [
-  { title: "Плановые отключения воды", date: new Date(2020, 0, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения электричества', date: new Date(2020, 1, 5), type: ServiceType.Electricity },
-  { title: 'Плановые отключения газа', date: new Date(2020, 2, 5), type: ServiceType.Gas },
-  { title: 'Плановые отключения воды', date: new Date(2020, 3, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения воды', date: new Date(2020, 5, 5), type: ServiceType.Water }
-];
+const maxElements = 3;
 
 export const Archive: React.FC = () => {
   const dispatch = useDispatch();
 
+  const [activePage, setActivePage] = useState(1);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [files, setFiles] = useState<FileType[]>([]);
+  const [pages, setPages] = useState<{[page: number]: FileType[]}>({1: []});
+  const [maxPages, setMaxPages] = useState(1);
+
+  const getPages = usePagination<FileType>(maxElements);
 
   const filter = useSelector((state: StoreType) => state.files.filter);
   const sort = useSelector((state: StoreType) => state.files.sort);
@@ -65,8 +56,10 @@ export const Archive: React.FC = () => {
     let result: FileType[] = [...filesOriginal];
     let handledResult = onFilterFiles(result);
     handledResult = onSortFiles(handledResult);
-    setFiles(handledResult);
-  }, [onFilterFiles, onSortFiles]);
+    setPages(getPages(handledResult));
+    setMaxPages(Math.round(handledResult.length / maxElements));
+    setActivePage(1);
+  }, [onFilterFiles, onSortFiles, getPages]);
 
   return (
     <>
@@ -87,20 +80,19 @@ export const Archive: React.FC = () => {
           </Line>
         </Line>
         <div className="files-archive">
-          <Line vertical>
-            {files.map((file, i) => {
+          <Line vertical mb="3">
+            {pages[activePage].map((file, i) => {
               return (
                 <Card key={i} className="file-card">
                   <Line className="card-container" justifyContent="between" alignItems="center">
-                    <Line>
-                      <div className='icon'>
-                        <Icon name="file-alt" prefix="far" className={classnames({
-                          'electricity-icon': file.type === ServiceType.Electricity,
-                          'water-icon': file.type === ServiceType.Water,
-                          'gas-icon': file.type === ServiceType.Gas
-                        })}></Icon>
-                      </div>
-                      <Line vertical ml="4" mt="2">
+                    <Line alignItems="center">
+                      <div className={classnames('label', {
+                        gas: file.type == ServiceType.Gas,
+                        electricity: file.type == ServiceType.Electricity,
+                        water: file.type == ServiceType.Water,
+                        heat: file.type == ServiceType.Heat
+                      })}></div>
+                      <Line vertical ml="3">
                         <div className="title">{file.title}</div>
                         <div className="lighter-text">{DateTime.format(new Date(file.date))}</div>
                       </Line>
@@ -114,6 +106,7 @@ export const Archive: React.FC = () => {
               );
             })}
           </Line>
+          <Pagination maxPages={maxPages} active={activePage} setActive={setActivePage} />
         </div>
       </Line>
       {showDeleteDialog && <DeleteDialog onClose={() => setShowDeleteDialog(false)} />}

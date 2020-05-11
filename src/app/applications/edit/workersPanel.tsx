@@ -35,9 +35,9 @@ export const WorkersPanel: React.FC = () => {
           </div>
         </Line>
         <div className="cards-container">
-          <Line vertical>
+          <Line vertical mb="3">
             {Object.keys(people).map(key => {
-              const x = people[key];
+              const x: Employee = people[key];
               return (
                 <Card key={key} className="workerCard" onClick={() => onChangeCheck(key)}>
                   <Line className="fullSize" alignItems="center" justifyContent="between">
@@ -51,7 +51,7 @@ export const WorkersPanel: React.FC = () => {
                         })}></div>
                       </div>
                       <Line vertical className="info">
-                        <Line className="name">{x.name}</Line>
+                        <Line className="name">{`${x.lastname} ${x.firstname} ${x.patronymic}`}</Line>
                         <Line className="profession">{x.profession}</Line>
                       </Line>
                     </Line>

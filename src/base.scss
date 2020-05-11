@@ -23,7 +23,7 @@ $input-btn-focus-width: 0.1em;
 .btn-sm {
   font-size: 0.95em;
   font-weight: lighter;
-  width: 7rem;
+  width: 7.5rem;
 }
 
 .water {
@@ -48,6 +48,12 @@ $input-btn-focus-width: 0.1em;
 
 .card {
   border-radius: 1em;
+}
+
+.page-item.active .page-link {
+  background-color: $blue;
+  color: white;
+  border-color: $blue;
 }
 
 ::-webkit-scrollbar {

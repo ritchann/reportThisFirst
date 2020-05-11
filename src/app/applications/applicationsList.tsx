@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector} from 'react-redux';
 import { StoreType } from 'core/store';
 import { Card } from 'app/applications/card';
 import { Toggle } from 'app/applications/toggle';
@@ -7,17 +7,24 @@ import { EventType } from 'data/event/model';
 import { Visibility, Status, ServiceType } from 'data/enum';
 import { RepeatPanel } from 'shared/layout/repeatPanel';
 import { ActionType } from 'data/actionTypes';
+import { Pagination } from 'shared/components/pagination';
+import { usePagination } from 'app/common/usePagination';
 
 import { useApplications } from './hooks/useApplications';
 
 import './applicationsList.scss';
 
+const maxElements = 3;
+
 export const ApplicationsList: React.FC = () => {
   const getApplications = useApplications(true);
+  const getPages = usePagination<EventType>(maxElements);
 
   const { eventList: list, currentMode: mode, filter } = useSelector((state: StoreType) => state.event);
 
-  const [events, setEvents] = useState<EventType[]>([]);
+  const [activePage, setActivePage] = useState(1);
+  const [pages, setPages] = useState<{ [page: number]: EventType[] }>({ 1: [] });
+  const [maxPages, setMaxPages] = useState(1);
 
   const onHandleEvents = useCallback((events: EventType[]) => {
     const types: string[] = [];
@@ -43,14 +50,20 @@ export const ApplicationsList: React.FC = () => {
         result = list.filter(event => event.status === Status.In_progress);
     };
     const handledResult = onHandleEvents(result);
-    setEvents(handledResult);
-  }, [list, mode, onHandleEvents]);
+    setPages(getPages(handledResult));
+    setMaxPages(Math.ceil(handledResult.length / maxElements));
+    setActivePage(1);
+  }, [list, mode, onHandleEvents, getPages]);
 
   return (
     <div className="applicationsList">
       <RepeatPanel actionType={ActionType.EVENT_GETEVENTSASYNC} action={getApplications}>
         <Toggle />
-        {events.map((x, i) => <Card key={i} event={x} />)}
+        {pages[activePage].map((x, i) => <Card key={i} event={x} />)}
+        <Pagination
+          maxPages={maxPages}
+          active={activePage}
+          setActive={setActivePage} />
       </RepeatPanel>
     </div>
   );

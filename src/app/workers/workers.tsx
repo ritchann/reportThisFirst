@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import classnames from 'classnames';
 import { Line } from 'shared/base/line';
 import { workers } from 'app/common/workersBase';
-import { Card, EditButton, DeleteButton } from 'shared/components';
+import { Card, EditButton, DeleteButton, Pagination } from 'shared/components';
 import { ServiceType } from 'data/enum';
 import { Filter } from 'app/workers/filter';
 import { Employee } from 'data/employee/model';
@@ -102,6 +102,7 @@ export const Workers: React.FC = () => {
                 );
               })}
             </Line>
+            <Pagination maxPages={1} />
           </div>
         </Line>
         <Filter />
