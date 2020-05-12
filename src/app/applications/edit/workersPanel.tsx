@@ -1,29 +1,33 @@
 import React, { useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { StoreType } from 'core/store';
 import classnames from "classnames";
 import { Line, Icon } from 'shared/base';
 import { Card } from 'shared/components';
 import { ServiceType } from 'data/enum';
-import { workers } from 'app/common/workersBase';
-import { Employee } from 'data/employee/model';
+import { setSelectedEmployees } from 'data/event/action';
 
 import { WorkerFilter } from './workerFilter';
 import './workersPanel.scss';
 
 
 export const WorkersPanel: React.FC = () => {
-  const filter = useSelector((state: StoreType) => state.event.workersFilter);
+  const dispatch = useDispatch();
 
-  const [people, setPeople] = useState<{ [key: number]: Employee }>(workers);
+  const filter = useSelector((state: StoreType) => state.event.workersFilter);
+  const employees = useSelector((state: StoreType) => state.employee.employees);
+  const selectedEmployees = useSelector((state: StoreType) => state.event.selectedEmployees);
+
   const [showFilter, setShowFilter] = useState(false);
 
-  const onChangeCheck = useCallback((id: string) => {
-    const newPeople = { ...people };
-    newPeople[id] = { ...people[id] };
-    newPeople[id].checked = !newPeople[id].checked;
-    setPeople(newPeople);
-  }, [people]);
+  const onChangeCheck = useCallback((id: number) => {
+    let newSelectedEmployees = [...selectedEmployees];
+    newSelectedEmployees.includes(id) ?
+      newSelectedEmployees = newSelectedEmployees.filter(x => x !== id)
+      :
+      newSelectedEmployees.push(id);
+    dispatch(setSelectedEmployees(newSelectedEmployees));
+  }, [selectedEmployees, dispatch]);
 
   return (
     <>
@@ -36,10 +40,9 @@ export const WorkersPanel: React.FC = () => {
         </Line>
         <div className="cards-container">
           <Line vertical mb="3">
-            {Object.keys(people).map(key => {
-              const x: Employee = people[key];
+            {employees.map(x => {
               return (
-                <Card key={key} className="workerCard" onClick={() => onChangeCheck(key)}>
+                <Card key={x.id} className="workerCard" onClick={() => onChangeCheck(x.id)}>
                   <Line className="fullSize" alignItems="center" justifyContent="between">
                     <Line alignItems="center">
                       <div className="label-container">
@@ -56,7 +59,7 @@ export const WorkersPanel: React.FC = () => {
                       </Line>
                     </Line>
                     <Line>
-                      {x.checked ?
+                      {selectedEmployees.includes(x.id) ?
                         (<div className="icon checked">
                           <Icon prefix="far" name="check-circle"></Icon>
                         </div>)

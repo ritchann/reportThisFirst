@@ -23,3 +23,5 @@ export const updateEventAsync = createAction<{
 export const setFilter = createAction<FilterType>(ActionType.EVENT_SETFILTER);
 
 export const setWorkersFilter = createAction<{ isApplied: boolean }>(ActionType.EVENT_SETWORKERFILTER);
+
+export const setSelectedEmployees = createAction<number[]>(ActionType.EVENT_SETSELECTEDEMPLOYEES);

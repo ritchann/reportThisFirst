@@ -1,4 +1,5 @@
 export interface Employee {
+  id: number;
   firstname: string,
   lastname: string,
   patronymic: string,
@@ -7,8 +8,7 @@ export interface Employee {
   profession: string,
   experience: string,
   schedule: string,
-  employement: string,
-  checked: boolean
+  employement: string
 };
 
 export interface FilterType {

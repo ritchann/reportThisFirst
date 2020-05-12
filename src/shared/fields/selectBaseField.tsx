@@ -201,24 +201,24 @@ export const SelectBaseField = <TOption extends object | string | number>({
                   {getLabel(option)}
                 </Line>
               ) : (
-                <Line>{x}</Line>
+                <Line>{getLabel(option)}</Line>
               )
             ) : (
               ''
             )}
             <div className={classNames('icon-display', { 'icon-hover': !disable })}>
-              <Icon
+              {admitRemove && <Icon
                 name="times"
                 className="icon"
                 onClick={() => {
                   if (!disable) onSelectCallback(x);
-                }}></Icon>
+                }}></Icon>}
             </div>
           </div>
         );
       });
     }
-  }, [disable, dnd, dragAndDrop, getContent, getLabel, multiselect, onDropCallback, onSelectCallback, options, value]);
+  }, [disable, dnd, dragAndDrop, getContent, getLabel, multiselect, onDropCallback, onSelectCallback, options, value, admitRemove]);
 
   const focusHolder = useRef<any>(null);
   const timeoutRef = useRef<any>(null);
@@ -269,7 +269,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
                 <Icon name="times" className="icon"></Icon>
               </div>
             )}
-            {multiselect && options?.size > 0 && (
+            {multiselect && admitRemove && options?.size > 0 && (
               <div
                 className={classNames('cross', { 'cross-enabled': !disable })}
                 onClick={() => {
@@ -278,7 +278,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
                 {<Icon name={value?.length != 0 ? 'times' : 'check'} className="icon"></Icon>}
               </div>
             )}
-            {!isCell && <Icon name="angle-down" className="icon"></Icon>}
+            {!isCell && !disable && <Icon name="angle-down" className="icon"></Icon>}
           </div>
         </Line>
         {show && (

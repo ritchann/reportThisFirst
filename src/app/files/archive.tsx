@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { StoreType } from 'core/store';
 import { setSort } from 'data/files/action';
 import { FileType } from 'data/files/model';
-import { files as filesOriginal } from 'app/common/filesBase';
 import { usePagination } from 'app/common/usePagination';
 
 import { DeleteDialog } from './deleteDialog';
@@ -21,13 +20,12 @@ export const Archive: React.FC = () => {
 
   const [activePage, setActivePage] = useState(1);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [pages, setPages] = useState<{[page: number]: FileType[]}>({1: []});
+  const [pages, setPages] = useState<{ [page: number]: FileType[] }>({ 1: [] });
   const [maxPages, setMaxPages] = useState(1);
 
   const getPages = usePagination<FileType>(maxElements);
 
-  const filter = useSelector((state: StoreType) => state.files.filter);
-  const sort = useSelector((state: StoreType) => state.files.sort);
+  const { files: filesOriginal, filter, sort } = useSelector((state: StoreType) => state.files);
 
   const onFilterFiles = useCallback((files: FileType[]) => {
     const types: string[] = [];
@@ -59,7 +57,7 @@ export const Archive: React.FC = () => {
     setPages(getPages(handledResult));
     setMaxPages(Math.round(handledResult.length / maxElements));
     setActivePage(1);
-  }, [onFilterFiles, onSortFiles, getPages]);
+  }, [onFilterFiles, onSortFiles, getPages, filesOriginal]);
 
   return (
     <>

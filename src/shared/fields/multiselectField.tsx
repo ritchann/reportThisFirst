@@ -15,6 +15,7 @@ interface Props<TOption extends object | string | number> {
   dragAndDrop?: boolean;
   inline?: boolean;
   disable?: boolean;
+  admitRemove?: boolean;
 }
 
 export const MultiselectField = <TOption extends object | string | number>({
@@ -26,6 +27,7 @@ export const MultiselectField = <TOption extends object | string | number>({
   dragAndDrop = false,
   inline,
   disable = false,
+  admitRemove,
   ...other
 }: Props<TOption>) => {
   return (
@@ -39,6 +41,7 @@ export const MultiselectField = <TOption extends object | string | number>({
       {...other}
       multiselect
       dragAndDrop={dragAndDrop}
-      disable={disable}></SelectBaseField>
+      disable={disable}
+      admitRemove={admitRemove}></SelectBaseField>
   );
 };
