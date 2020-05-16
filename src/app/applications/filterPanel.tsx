@@ -23,37 +23,37 @@ export const FilterPanel: React.FC = () => {
   );
 
   return (
-    <Line pr="4" vertical className="filter-panel">
-      <Block className="title" mt="2">
+    <Line vertical className="filter-panel">
+      <Block className="label">
         Фильтры
       </Block>
       <Checkbox
-        className="title"
+        className="label"
         text="Электричество"
         value={filter.isElectricity}
         onChange={(v: boolean) => onChangeFilter('isElectricity', v)}></Checkbox>
       <Checkbox
-        className="title"
+        className="label"
         text="Вода"
         value={filter.isWater}
         onChange={(v: boolean) => onChangeFilter('isWater', v)}></Checkbox>
       <Checkbox
-        className="title"
+        className="label"
         text="Газ"
         value={filter.isGas}
         onChange={(v: boolean) => onChangeFilter('isGas', v)}></Checkbox>
       <Checkbox
-        className="title"
+        className="label"
         text="Теплоснабжение"
         value={filter.isHeat}
         onChange={(v: boolean) => onChangeFilter('isHeat', v)}></Checkbox>
-      <Block className="title" mt="4">
+      <Block className="label" mt="4">
         Дата
       </Block>
       <Block mt="2">
         <DateInputField value={filter.date} onChange={(v: Date) => onChangeFilter('date', v)}></DateInputField>
       </Block>
-      <Block className="title" mt="1">
+      <Block className="label" mt="1">
         Статус
       </Block>
       <Block mt="2">
@@ -65,7 +65,7 @@ export const FilterPanel: React.FC = () => {
           name="Status"
           onChange={(v: string) => onChangeFilter('status', v)}></SelectField>
       </Block>
-      <Block className="title" mt="3">
+      <Block className="label" mt="3">
         Уровень
       </Block>
       <Block mt="2">

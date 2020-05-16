@@ -2,19 +2,17 @@ import React, { useEffect, useCallback, useState } from 'react';
 import { useSelector} from 'react-redux';
 import { StoreType } from 'core/store';
 import { Card } from 'app/applications/card';
-import { Toggle } from 'app/applications/toggle';
 import { EventType } from 'data/event/model';
 import { Visibility, Status, ServiceType } from 'data/enum';
 import { RepeatPanel } from 'shared/layout/repeatPanel';
 import { ActionType } from 'data/actionTypes';
 import { Pagination } from 'shared/components/pagination';
 import { usePagination } from 'app/common/usePagination';
+import { Line } from 'shared/base';
 
 import { useApplications } from './hooks/useApplications';
 
-import './applicationsList.scss';
-
-const maxElements = 3;
+const maxElements = 4;
 
 export const ApplicationsList: React.FC = () => {
   const getApplications = useApplications(true);
@@ -56,15 +54,14 @@ export const ApplicationsList: React.FC = () => {
   }, [list, mode, onHandleEvents, getPages]);
 
   return (
-    <div className="applicationsList">
+    <Line w="100" vertical>
       <RepeatPanel actionType={ActionType.EVENT_GETEVENTSASYNC} action={getApplications}>
-        <Toggle />
         {pages[activePage].map((x, i) => <Card key={i} event={x} />)}
         <Pagination
           maxPages={maxPages}
           active={activePage}
           setActive={setActivePage} />
       </RepeatPanel>
-    </div>
+    </Line>
   );
 };

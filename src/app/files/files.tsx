@@ -1,21 +1,21 @@
 import React from 'react';
-import { Line } from 'shared/base/line';
+import { Page } from 'shared/layout';
+import { Line } from 'shared/base';
 
 import { DropZone } from './dropZone';
 import { Archive } from './archive';
 import { Filter } from './filter';
 
-import './files.scss';
-
 export const Files: React.FC = () => {
   return (
-    <Line className="files">
-      <Line className="content" vertical>
-        <Line className="title" pb="4">Плановые отключения</Line>
-        <DropZone />
-        <Archive />
-      </Line>
-      <Filter></Filter>
-    </Line>
+    <Page
+      pageTitle={<div>Плановые отключения</div>}
+      pageContent={
+        <Line vertical w="100">
+          <DropZone />
+          <Archive />
+        </Line>
+      }
+      filterPanel={<Filter />}></Page>
   );
 };

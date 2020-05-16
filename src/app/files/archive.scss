@@ -1,10 +1,9 @@
-@import "app/constants.scss";
+@import 'app/constants.scss';
 
 .archive {
   padding-top: 3em;
   .header {
     width: 100%;
-    padding-bottom: 0.5em;
     border-bottom: 2px solid $light-grey;
     .sort {
       font-size: 0.7em;
@@ -13,22 +12,5 @@
   }
   .files-archive {
     padding: 0 0.5em 0.75em 0.25em;
-    .card {
-      margin-top: 1em;
-      height: 6em;
-      .card-container {
-        width: 100%;
-        .label {
-          border-radius: 10px;
-          width: 1em;
-          height: 1em;
-          margin-right: 0.5em;
-          margin-left: 1em;
-        }
-        .title {
-          font-size: 1.2em;
-        }
-      }
-    }
   }
 }

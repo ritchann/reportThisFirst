@@ -26,35 +26,45 @@ export const Card: React.FC<Props> = ({ event }) => {
 
   const currentMode = useSelector((state: StoreType) => state.event.currentMode);
 
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState('');
   const [showApproveDialog, setShowApproveDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showRejectDialog, setShowRejectDialog] = useState(false);
 
   useEffect(() => {
-    dispatch(getAddressAsync({
-      lon: event.lon,
-      lat: event.lat,
-      onResponseCallback: (v: any) => setAddress(v)
-    }, `${event.lon}${event.lat}`));
+    dispatch(
+      getAddressAsync(
+        {
+          lon: event.lon,
+          lat: event.lat,
+          onResponseCallback: (v: any) => setAddress(v),
+        },
+        `${event.lon}${event.lat}`
+      )
+    );
   }, [dispatch, event.lat, event.lon]);
+
+  const header = (
+    <Line className="header" alignItems="baseline">
+      <div
+        className={classnames('label', {
+          gas: event.type == ServiceType.Gas,
+          electricity: event.type == ServiceType.Electricity,
+          water: event.type == ServiceType.Water,
+          heat: event.type == ServiceType.Heat,
+        })}></div>
+      <div className="title bolder-text">{type.get(event.type)}</div>
+    </Line>
+  );
 
   return (
     <>
       <CardContainer>
-        <Line className="card-body">
-          <Line vertical mt="3" ml="2">
-            <Line className="header" alignItems="baseline">
-              <div className={classnames('label', {
-                gas: event.type == ServiceType.Gas,
-                electricity: event.type == ServiceType.Electricity,
-                water: event.type == ServiceType.Water,
-                heat: event.type == ServiceType.Heat
-              })}></div>
-              <div className="title bolder-text">{type.get(event.type)}</div>
-            </Line>
-            <Line mt="2">
-              <Line vertical className="left-column">
+        <Line className="card-body" justifyContent="between">
+          <Line vertical>
+            {header}
+            <Line>
+              <Line vertical mr="5">
                 <div className="lighter-text">{DateTime.format(new Date(event.created_at))}</div>
                 <Line mt="1">
                   <div>Адрес: </div>
@@ -72,42 +82,51 @@ export const Card: React.FC<Props> = ({ event }) => {
               </Line>
             </Line>
           </Line>
-          <Line className="col-sm card-column buttons" vertical alignItems="end" mt="3">
-            <div className="mt-1">
-              {currentMode == Visibility.Pending && (
-                <ApproveButton small mb="2" onClick={() => setShowApproveDialog(true)} />
-              )}
-              <Link to={`/edit/${event.id}`}>
-                <EditButton small mb="2" />
-              </Link>
-              <DeleteButton
-                small
-                onClick={() => currentMode == Visibility.Pending ? setShowRejectDialog(true) : setShowDeleteDialog(true)}
-                isReject={currentMode == Visibility.Pending}
-                mb="2"
-              />
-            </div>
+          <Line vertical justifyContent="center">
+            {currentMode == Visibility.Pending && (
+              <ApproveButton small mb="2" onClick={() => setShowApproveDialog(true)} />
+            )}
+            <Link to={`/edit/${event.id}`}>
+              <EditButton small mb="2" />
+            </Link>
+            <DeleteButton
+              small
+              onClick={() =>
+                currentMode == Visibility.Pending ? setShowRejectDialog(true) : setShowDeleteDialog(true)
+              }
+              isReject={currentMode == Visibility.Pending}
+              mb="2"
+            />
           </Line>
         </Line>
       </CardContainer>
-      {showApproveDialog && <ApproveDialog
-        onClose={(needUpdate: boolean) => {
-          setShowApproveDialog(false);
-          if (needUpdate) update();
-        }}
-        event={event} />}
-      {showDeleteDialog && <DeleteDialog
-        onClose={(needUpdate: boolean) => {
-          setShowDeleteDialog(false);
-          if (needUpdate) update();
-        }}
-        event={event} />}
-      {showRejectDialog && <RejectDialog
-        onClose={(needUpdate: boolean) => {
-          setShowRejectDialog(false);
-          if (needUpdate) update();
-        }}
-        event={event} />}
+      {showApproveDialog && (
+        <ApproveDialog
+          onClose={(needUpdate: boolean) => {
+            setShowApproveDialog(false);
+            if (needUpdate) update();
+          }}
+          event={event}
+        />
+      )}
+      {showDeleteDialog && (
+        <DeleteDialog
+          onClose={(needUpdate: boolean) => {
+            setShowDeleteDialog(false);
+            if (needUpdate) update();
+          }}
+          event={event}
+        />
+      )}
+      {showRejectDialog && (
+        <RejectDialog
+          onClose={(needUpdate: boolean) => {
+            setShowRejectDialog(false);
+            if (needUpdate) update();
+          }}
+          event={event}
+        />
+      )}
     </>
   );
 };

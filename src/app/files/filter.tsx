@@ -16,38 +16,43 @@ export const Filter: React.FC = () => {
   const onChangeFilter = useCallback(
     (field: keyof FilterType, value: boolean | Date | string) => {
       dispatch(setFilter({ ...filter, [field]: value }));
-    }, [dispatch, filter]);
+    },
+    [dispatch, filter]
+  );
 
   return (
-    <Line pl="2" vertical className="filter-panel files-filters">
-      <Block className="title" mt="2">
-        Фильтры
-      </Block>
+    <Line vertical className="filter-panel">
+      <Block className="label">Фильтры</Block>
       <Checkbox
-        className="title"
+        className="label"
         text="Электричество"
         value={filter.isElectricity}
         onChange={(v: boolean) => onChangeFilter('isElectricity', v)}></Checkbox>
       <Checkbox
-        className="title"
+        className="label"
         text="Вода"
         value={filter.isWater}
         onChange={(v: boolean) => onChangeFilter('isWater', v)}></Checkbox>
       <Checkbox
-        className="title"
+        className="label"
         text="Газ"
         value={filter.isGas}
         onChange={(v: boolean) => onChangeFilter('isGas', v)}></Checkbox>
       <Checkbox
-        className="title"
+        className="label"
         text="Теплоснабжение"
         value={filter.isHeat}
         onChange={(v: boolean) => onChangeFilter('isHeat', v)}></Checkbox>
-      <Block mt="4">
-        <DateInputField value={filter.dateFrom}
-          onChange={(v: Date) => onChangeFilter('dateFrom', v)}></DateInputField>
-        <DateInputField value={filter.dateTo}
-          onChange={(v: Date) => onChangeFilter('dateTo', v)}></DateInputField>
+      <Block className="label" mt="4">
+        Период
+      </Block>
+      <Block mt="2">
+        <Line mb="2">
+          <DateInputField
+            value={filter.dateFrom}
+            onChange={(v: Date) => onChangeFilter('dateFrom', v)}></DateInputField>
+        </Line>
+        <DateInputField value={filter.dateTo} onChange={(v: Date) => onChangeFilter('dateTo', v)}></DateInputField>
       </Block>
     </Line>
   );

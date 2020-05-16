@@ -13,7 +13,7 @@ interface Props {
 
 export const Card: React.FC<Props> = ({ className, children, onClick, ...other }) => {
   return (
-    <Line className={classnames('card', className)} onClick={onClick} {...other}>
+    <Line mb="3" className={classnames('card', className)} onClick={onClick} {...other}>
       {children}
     </Line>
   );

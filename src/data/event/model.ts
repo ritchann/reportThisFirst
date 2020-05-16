@@ -31,9 +31,9 @@ export interface FilterType {
   level?: string;
 }
 
-export interface WorkerFilterType {
-  type: string[];
-  schedule: string[];
-  employement: string[];
-  experience: string[];
+export interface EmployeeFilterType {
+  type?: string[];
+  schedule?: string[];
+  employement?: string[];
+  experience?: string[];
 }

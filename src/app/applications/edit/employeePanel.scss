@@ -1,0 +1,57 @@
+@import "app/constants.scss";
+
+.employee-panel {
+  width: 15em;
+  .title {
+    font-size: 0.9em;
+    width: 100%;
+    border-bottom: 1px solid $light-grey;
+    color: $light-grey;
+    .label {
+      color: $dark-grey;
+    }
+    .filter-icon {
+      cursor: pointer;
+    }
+    .active {
+      color: $dark-grey;
+    }
+  }
+  .cards-container {
+    .workerCard {
+      cursor: pointer;
+      min-height: 6em;
+      padding: 0.5em;
+      .fullSize {
+        width: 100%;
+      }
+      .label-container {
+        .label {
+          border-radius: 10px;
+          width: 1em;
+          height: 1em;
+          margin-left: 0.75em;
+        }
+      }
+      .info {
+        margin-left: 0.5em;
+        .name {
+          font-size: 1.1em;
+        }
+        .profession {
+          font-weight: lighter;
+        }
+      }
+      .icon {
+        font-size: 1.4em;
+        margin: 0 0.5em;
+      }
+      .checked {
+        color: $dark-grey;
+      }
+      .unchecked {
+        color: $grey;
+      }
+    }
+  }
+}

@@ -40,7 +40,7 @@ export const ApproveDialog: React.FC<Props> = ({ onClose, event }) => {
 
   return (
     <Modal header="Подтверждение заявки" onCancel={() => onClose(false)} footer={footer}>
-      <div className="text-modal">Вы уверены, что хотите подтвердить заявку?</div>
+      <div className="text-modal lighter-text">Вы уверены, что хотите подтвердить заявку?</div>
     </Modal>
   );
 };

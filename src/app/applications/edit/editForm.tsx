@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, CancelButton } from 'shared/components';
 import { Line } from 'shared/base';
-import { TextBoxField, SelectField, DateInputField, MultiselectField } from 'shared/fields';
+import { TextBoxField, SelectField, DateInputField } from 'shared/fields';
 import { type, priority, status } from 'app/common/translations';
 import { EventType } from 'data/event/model';
 import { DateTime } from 'shared/base/utils/dateTime';
@@ -15,9 +15,10 @@ import './editForm.scss';
 
 interface Props {
   originalEvent: EventType;
+  history: any;
 }
 
-export const EditForm: React.FC<Props> = ({ originalEvent }) => {
+export const EditForm: React.FC<Props> = ({ originalEvent, history }) => {
   const dispatch = useDispatch();
   const [event, setEvent] = useState<EventType>();
 
@@ -25,20 +26,20 @@ export const EditForm: React.FC<Props> = ({ originalEvent }) => {
   const allEmployees = useSelector((state: StoreType) => state.employee.employees);
 
   const selected = useMemo(() => {
-    const result = new Map<string, string>();
-    allEmployees.forEach(employee => {
-      const name = `${employee.lastname} ${employee.firstname[0].toUpperCase()}. ${employee.patronymic[0].toUpperCase()}.`;
-      result.set(employee.id.toString(), name);
+    const result: string[] = [];
+    selectedEmployees.forEach((id) => {
+      const employee = allEmployees.find((employee) => employee.id === id);
+      if (employee)
+        result.push(
+          `${employee.lastname} ${employee.firstname[0].toUpperCase()}. ${employee.patronymic[0].toUpperCase()}.`
+        );
     });
-    return result;
-  }, [allEmployees]);
+    return result.join(', ');
+  }, [selectedEmployees, allEmployees]);
 
-  const ids = useMemo(() => selectedEmployees.map(x => x.toString()), [selectedEmployees]);
-
-  const onApply = useCallback(() => dispatch(updateEventAsync({ event, onResponseCallback: () => { } })), [
-    dispatch,
-    event,
-  ]);
+  const onApply = useCallback(() => {
+    dispatch(updateEventAsync({ event, onResponseCallback: () => history.push('/') }));
+  }, [dispatch, event, history]);
 
   useEffect(() => setEvent(originalEvent), [originalEvent]);
 
@@ -80,10 +81,10 @@ export const EditForm: React.FC<Props> = ({ originalEvent }) => {
             onChange={(status) => setEvent({ ...event, status })}></SelectField>
           <Line className="field" vertical>
             <div className="label">Заявка создана</div>
-            <DateInputField value={event ? new Date(event.created_at) : undefined} onChange={() => { }} disabled />
+            <DateInputField value={event ? new Date(event.created_at) : undefined} onChange={() => {}} disabled />
           </Line>
         </Line>
-        <Line className="fullStroke" justifyContent="between">
+        <Line className="fullStroke" justifyContent="between" mt="2">
           <Line className="field" vertical>
             <div className="label">Начало работы</div>
             <DateInputField
@@ -99,37 +100,34 @@ export const EditForm: React.FC<Props> = ({ originalEvent }) => {
             />
           </Line>
         </Line>
-        <Line className="fullStroke" justifyContent="between">
+        <Line className="fullStroke" justifyContent="between" mt="2">
           <Line className="field" vertical>
             <div className="label">Адрес</div>
-            <TextBoxField name="region" value="" onChange={() => { }} placeholder="Район" />
+            <TextBoxField name="region" value="" onChange={() => {}} placeholder="Район" />
           </Line>
           <Line className="field address" vertical>
-            <TextBoxField name="house" value="" onChange={() => { }} placeholder="Дом" />
+            <TextBoxField name="house" value="" onChange={() => {}} placeholder="Дом" />
           </Line>
         </Line>
         <Line className="fullStroke" justifyContent="between" mt="1">
           <Line className="field" vertical>
-            <TextBoxField name="street" value="" onChange={() => { }} placeholder="Улица" />
+            <TextBoxField name="street" value="" onChange={() => {}} placeholder="Улица" />
           </Line>
           <Line className="field" vertical>
-            <TextBoxField name="apartment" value="" onChange={() => { }} placeholder="Квартира" />
+            <TextBoxField name="apartment" value="" onChange={() => {}} placeholder="Квартира" />
           </Line>
         </Line>
-        <Line className="fullStroke" vertical>
-          <div className="label">Выберите рабочих на панели справа</div>
-          <MultiselectField 
-          admitRemove={false} 
-          className="workers"
-           value={ids} 
-           options={selected} 
-           getLabel={x => x} 
-           disable
-           onChange={() => {}}/>
+        <Line className="fullStroke">
+          <TextBoxField className="employees" name="employees" value={selected} onChange={() => {}}>
+            Выберите рабочих на панели справа
+          </TextBoxField>
         </Line>
         <Line justifyContent="end" mt="3">
-          <CancelButton mr="2"></CancelButton>
-          <LoadingButton className="btn-outline-primary" actionType={ActionType.EVENT_UPDATEVENTASYNC} onClick={onApply}>
+          <CancelButton mr="2" onClick={() => history.push('/')}></CancelButton>
+          <LoadingButton
+            className="btn-outline-primary"
+            actionType={ActionType.EVENT_UPDATEVENTASYNC}
+            onClick={onApply}>
             Подтвердить
           </LoadingButton>
         </Line>

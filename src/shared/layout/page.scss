@@ -1,0 +1,13 @@
+.page-template {
+  margin: 2em;
+  .title {
+    margin-bottom: 1em;
+  }
+  .page {
+    flex: 3;
+    margin-right: 2em;
+  }
+  .filter {
+    flex: 1;
+  }
+}

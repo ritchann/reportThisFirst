@@ -28,7 +28,10 @@ interface Props<TOption extends object | string | number> {
   isCell?: boolean;
   inline?: boolean;
   dragAndDrop?: boolean;
+  onlyKeys?: boolean;
 }
+
+const maxBoxes = 2;
 
 export const SelectBaseField = <TOption extends object | string | number>({
   label,
@@ -50,7 +53,8 @@ export const SelectBaseField = <TOption extends object | string | number>({
   isCell,
   getContent,
   inline,
-  dragAndDrop = false
+  dragAndDrop = false,
+  onlyKeys = true,
 }: Props<TOption>) => {
   if (multiselect && !Array.isArray(value)) {
     value = [];
@@ -61,7 +65,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
   const [show, setShow] = useState(alwaysShow);
   const [inputValue, setInputValue] = useState<string>('');
   const { reference, popper } = usePopper({
-    onUpdate: data => {
+    onUpdate: (data) => {
       if (data.hide === true) {
         deactivate();
       }
@@ -71,21 +75,16 @@ export const SelectBaseField = <TOption extends object | string | number>({
     modifiers: {
       preventOverflow: { enabled: true, priority: ['left', 'right'], boundariesElement: 'scrollParent' },
       hide: {
-        enabled: true
-      }
-    }
+        enabled: true,
+      },
+    },
   });
 
   const filter = useMemo(() => {
     const filter = new Map<string, TOption>();
     if (options) {
       options.forEach((option, key) => {
-        if (
-          getLabel(option)
-            .toLowerCase()
-            .includes(inputValue.toLowerCase())
-        )
-          filter.set(key, option);
+        if (getLabel(option).toLowerCase().includes(inputValue.toLowerCase())) filter.set(key, option);
       });
     }
     return filter;
@@ -99,7 +98,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
         newState = val != key ? key : val;
       } else {
         const val = (value as string[]) ?? [];
-        newState = val.includes(key) ? val.filter(x => x != key) : [...val, key];
+        newState = val.includes(key) ? val.filter((x) => x != key) : [...val, key];
       }
       onChange(newState);
       setInputValue('');
@@ -115,7 +114,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
           key={key}
           onClick={() => onSelectCallback(key)}
           className={classNames('item', {
-            selected: !multiselect ? value == key : value?.includes(key)
+            selected: !multiselect ? value == key : value?.includes(key),
           })}
           disabled={disabledOptions ? disabledOptions(key) : false}>
           {getContent ? (
@@ -170,12 +169,14 @@ export const SelectBaseField = <TOption extends object | string | number>({
       );
     } else {
       const val = (value as string[]) ?? [];
-      return val.map(x => {
+      let result = [...val];
+      result = isCell && val.length > maxBoxes ? result.splice(0, maxBoxes) : result;
+      return result.map((x) => {
         const option = options.get(x);
         return (
           <div
             draggable={dragAndDrop && multiselect && !disable}
-            onDragStart={e => {
+            onDragStart={(e) => {
               e.stopPropagation();
               setDnd({ from: x });
             }}
@@ -183,13 +184,13 @@ export const SelectBaseField = <TOption extends object | string | number>({
             onDragEnter={() => {
               if (dnd !== undefined && dnd.from !== x) setDnd({ ...dnd, to: x });
             }}
-            onDragOver={e => {
+            onDragOver={(e) => {
               if (dnd !== undefined && dnd.from !== x) e.preventDefault();
             }}
             onDrop={() => {
               if (dnd !== undefined && dnd.from !== x) onDropCallback(dnd.from, dnd.to);
             }}
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation();
             }}
             key={x}
@@ -201,24 +202,37 @@ export const SelectBaseField = <TOption extends object | string | number>({
                   {getLabel(option)}
                 </Line>
               ) : (
-                <Line>{getLabel(option)}</Line>
+                <Line className="box-label">{onlyKeys ? x : getLabel(option)}</Line>
               )
             ) : (
               ''
             )}
             <div className={classNames('icon-display', { 'icon-hover': !disable })}>
-              {admitRemove && <Icon
+              <Icon
                 name="times"
                 className="icon"
                 onClick={() => {
                   if (!disable) onSelectCallback(x);
-                }}></Icon>}
+                }}></Icon>
             </div>
           </div>
         );
       });
     }
-  }, [disable, dnd, dragAndDrop, getContent, getLabel, multiselect, onDropCallback, onSelectCallback, options, value, admitRemove]);
+  }, [
+    disable,
+    dnd,
+    dragAndDrop,
+    getContent,
+    getLabel,
+    isCell,
+    multiselect,
+    onDropCallback,
+    onSelectCallback,
+    onlyKeys,
+    options,
+    value,
+  ]);
 
   const focusHolder = useRef<any>(null);
   const timeoutRef = useRef<any>(null);
@@ -236,6 +250,10 @@ export const SelectBaseField = <TOption extends object | string | number>({
       if (onDeactivated) onDeactivated();
     });
   };
+
+  const countString =
+    multiselect && isCell && value.length > maxBoxes ? `and ${value.length - maxBoxes} more` : undefined;
+
   return (
     <div className={classNames('multiselect', { [`col-md-${size}`]: size != null, ' inline': inline }, className)}>
       {label && <label className="label">{label}</label>}
@@ -243,42 +261,49 @@ export const SelectBaseField = <TOption extends object | string | number>({
         className={classNames('container form-control', {
           disable,
           active: !disable && show,
-          cell: isCell
+          cell: isCell,
         })}
         onMouseDown={disable ? undefined : activate}
         onBlurCapture={deactivate}
         tabIndex={0}
         role="button"
-        ref={e => {
+        ref={(e) => {
           focusHolder.current = e;
           reference.current = e;
         }}>
         <Line justifyContent="between" alignItems="center" className={isCell ? 'content cell' : 'content'}>
-          <Line className={noWrap ? 'word-hidden' : undefined} wrap>
-            {optionsBoxes}
+          <Line className={noWrap ? 'word-hidden' : undefined} wrap={!(isCell && multiselect)} alignItems="baseline">
+            {isCell && multiselect ? (
+              <>
+                {optionsBoxes}&nbsp;&nbsp;{countString}
+              </>
+            ) : (
+              optionsBoxes
+            )}
           </Line>
           <div className="icons">
-            {admitRemove && (
+            {admitRemove && !multiselect && (
               <div
                 className={classNames('cross', {
                   cell: isCell,
-                  'cross-enabled': !disable
+                  'cross-enabled': !disable,
                 })}
                 style={isCell ? { borderRight: 'none' } : { borderRight: 'solid $light-grey 2px' }}
                 onClick={disable ? () => {} : onRemove ? onRemove : () => onSelectCallback(' ')}>
                 <Icon name="times" className="icon"></Icon>
               </div>
             )}
-            {multiselect && admitRemove && options?.size > 0 && (
+            {multiselect && options?.size > 0 && (
               <div
-                className={classNames('cross', { 'cross-enabled': !disable })}
+                className={classNames('cross', { 'cross-enabled': !disable, cell: isCell })}
+                style={isCell ? { borderRight: 'none' } : { borderRight: 'solid $light-grey 2px' }}
                 onClick={() => {
                   if (!disable) value?.length != 0 ? onChange([]) : onChange(Array.from(options).map(([key]) => key));
                 }}>
                 {<Icon name={value?.length != 0 ? 'times' : 'check'} className="icon"></Icon>}
               </div>
             )}
-            {!isCell && !disable && <Icon name="angle-down" className="icon"></Icon>}
+            {!isCell && <Icon name="angle-down" className="icon"></Icon>}
           </div>
         </Line>
         {show && (
@@ -289,16 +314,16 @@ export const SelectBaseField = <TOption extends object | string | number>({
                   className="input-container"
                   justifyContent="between"
                   alignItems="center"
-                  onClick={e => e.stopPropagation()}>
+                  onClick={(e) => e.stopPropagation()}>
                   <input
                     className="input"
                     value={inputValue}
-                    onChange={e => setInputValue(e.target.value)}
+                    onChange={(e) => setInputValue(e.target.value)}
                     autoFocus></input>
                   <Icon name="search" className="icon"></Icon>
                 </Line>
               )}
-              <div onScroll={e => e.stopPropagation()} className="items">
+              <div onScroll={(e) => e.stopPropagation()} className="items">
                 {optionsDropdown}
               </div>
             </div>

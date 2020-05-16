@@ -13,8 +13,6 @@ interface Props {
   event: EventType;
 }
 
-// TODO: add message view и закрывать окно, если нет ошибок
-
 export const RejectDialog: React.FC<Props> = ({ onClose, event }) => {
   const dispatch = useDispatch();
 
@@ -42,7 +40,7 @@ export const RejectDialog: React.FC<Props> = ({ onClose, event }) => {
 
   return (
     <Modal header="Отклонение заявки" onCancel={() => onClose(false)} footer={footer}>
-      <div className="text-modal">Вы уверены, что хотите отклонить заявку?</div>
+      <div className="text-modal lighter-text">Вы уверены, что хотите отклонить заявку?</div>
     </Modal>
   );
 };
