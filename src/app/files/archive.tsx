@@ -13,7 +13,7 @@ import { FileCard } from './fileCard';
 
 import './archive.scss';
 
-const maxElements = 3;
+const maxElements = 2;
 
 export const Archive: React.FC = () => {
   const dispatch = useDispatch();
