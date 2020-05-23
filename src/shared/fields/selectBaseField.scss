@@ -134,4 +134,12 @@
     opacity: 0.75;
     border: solid #c0c0c0 1px;
   }
+
+  .input-search{
+    border: none
+  }
+  .input-search:focus,:active {
+    box-shadow: none !important;
+    border:none !important;
+  }
 }

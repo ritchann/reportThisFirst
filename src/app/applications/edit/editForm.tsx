@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Card, CancelButton } from 'shared/components';
 import { Line } from 'shared/base';
@@ -9,8 +9,10 @@ import { DateTime } from 'shared/base/utils/dateTime';
 import { LoadingButton } from 'shared/layout';
 import { ActionType } from 'data/actionTypes';
 import { updateEventAsync } from 'data/event/action';
-
+import { useGeocode, httpGeocodeObject, GeocoderMetaData, GeoObject } from 'shared/mapLibrary/httpGeocoding/useGeocode';
 import './editForm.scss';
+import { http } from 'core/http';
+
 
 interface Props {
   originalEvent: EventType;
@@ -18,12 +20,24 @@ interface Props {
 
 export const EditForm: React.FC<Props> = ({ originalEvent }) => {
   const dispatch = useDispatch();
+  const geocode = useGeocode();
+  const [httpGeocode, setHttpGeocode] = useState<httpGeocodeObject>();
   const [event, setEvent] = useState<EventType>();
+  const [address, setAddress] = useState<string>();
+  const options = useMemo(() => {
+    return new Map<string, GeoObject>(httpGeocode?.GeoObjectCollection.featureMember.map(x=>[x.GeoObject.metaDataProperty.GeocoderMetaData.text, x.GeoObject]));
+  }, [httpGeocode]);
+
+  console.log(options);
 
   const onApply = useCallback(() => dispatch(updateEventAsync({ event, onResponseCallback: () => {} })), [
     dispatch,
     event,
   ]);
+
+  useEffect(() => {
+    geocode(address, 'def62d81-e99f-4395-8b66-dbf1a1d64c1a', 'json').then((v) => setHttpGeocode(v));
+  }, [geocode,address]);
 
   useEffect(() => setEvent(originalEvent), [originalEvent]);
 
@@ -85,9 +99,14 @@ export const EditForm: React.FC<Props> = ({ originalEvent }) => {
           </Line>
         </Line>
         <Line className="fullStroke" justifyContent="between">
-          <Line className="field" vertical>
+          <Line className="" vertical>
             <div className="label">Адрес</div>
-            <TextBoxField name="region" value="" onChange={() => {}} placeholder="Район" />
+            <SelectField withInput
+              options={options}
+              getLabel={x => x.metaDataProperty.GeocoderMetaData.text}
+              value={address}
+              onChange={(v) => setAddress(v)}></SelectField>
+            <TextBoxField name="region" value={address} onChange={setAddress} placeholder="Район" />
           </Line>
           <Line className="field address" vertical>
             <TextBoxField name="house" value="" onChange={() => {}} placeholder="Дом" />
@@ -113,7 +132,10 @@ export const EditForm: React.FC<Props> = ({ originalEvent }) => {
         </Line>
         <Line justifyContent="end" mt="3">
           <CancelButton mr="2"></CancelButton>
-          <LoadingButton className="btn-outline-primary" actionType={ActionType.EVENT_UPDATEVENTASYNC} onClick={onApply}>
+          <LoadingButton
+            className="btn-outline-primary"
+            actionType={ActionType.EVENT_UPDATEVENTASYNC}
+            onClick={onApply}>
             Подтвердить
           </LoadingButton>
         </Line>

@@ -28,6 +28,7 @@ interface Props<TOption extends object | string | number> {
   isCell?: boolean;
   inline?: boolean;
   dragAndDrop?: boolean;
+  withInput?: boolean;
 }
 
 export const SelectBaseField = <TOption extends object | string | number>({
@@ -50,7 +51,8 @@ export const SelectBaseField = <TOption extends object | string | number>({
   isCell,
   getContent,
   inline,
-  dragAndDrop = false
+  dragAndDrop = false,
+  withInput = false,
 }: Props<TOption>) => {
   if (multiselect && !Array.isArray(value)) {
     value = [];
@@ -61,7 +63,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
   const [show, setShow] = useState(alwaysShow);
   const [inputValue, setInputValue] = useState<string>('');
   const { reference, popper } = usePopper({
-    onUpdate: data => {
+    onUpdate: (data) => {
       if (data.hide === true) {
         deactivate();
       }
@@ -71,21 +73,16 @@ export const SelectBaseField = <TOption extends object | string | number>({
     modifiers: {
       preventOverflow: { enabled: true, priority: ['left', 'right'], boundariesElement: 'scrollParent' },
       hide: {
-        enabled: true
-      }
-    }
+        enabled: true,
+      },
+    },
   });
 
   const filter = useMemo(() => {
     const filter = new Map<string, TOption>();
     if (options) {
       options.forEach((option, key) => {
-        if (
-          getLabel(option)
-            .toLowerCase()
-            .includes(inputValue.toLowerCase())
-        )
-          filter.set(key, option);
+        if (getLabel(option).toLowerCase().includes(inputValue.toLowerCase())) filter.set(key, option);
       });
     }
     return filter;
@@ -99,7 +96,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
         newState = val != key ? key : val;
       } else {
         const val = (value as string[]) ?? [];
-        newState = val.includes(key) ? val.filter(x => x != key) : [...val, key];
+        newState = val.includes(key) ? val.filter((x) => x != key) : [...val, key];
       }
       onChange(newState);
       setInputValue('');
@@ -115,7 +112,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
           key={key}
           onClick={() => onSelectCallback(key)}
           className={classNames('item', {
-            selected: !multiselect ? value == key : value?.includes(key)
+            selected: !multiselect ? value == key : value?.includes(key),
           })}
           disabled={disabledOptions ? disabledOptions(key) : false}>
           {getContent ? (
@@ -170,12 +167,12 @@ export const SelectBaseField = <TOption extends object | string | number>({
       );
     } else {
       const val = (value as string[]) ?? [];
-      return val.map(x => {
+      return val.map((x) => {
         const option = options.get(x);
         return (
           <div
             draggable={dragAndDrop && multiselect && !disable}
-            onDragStart={e => {
+            onDragStart={(e) => {
               e.stopPropagation();
               setDnd({ from: x });
             }}
@@ -183,13 +180,13 @@ export const SelectBaseField = <TOption extends object | string | number>({
             onDragEnter={() => {
               if (dnd !== undefined && dnd.from !== x) setDnd({ ...dnd, to: x });
             }}
-            onDragOver={e => {
+            onDragOver={(e) => {
               if (dnd !== undefined && dnd.from !== x) e.preventDefault();
             }}
             onDrop={() => {
               if (dnd !== undefined && dnd.from !== x) onDropCallback(dnd.from, dnd.to);
             }}
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation();
             }}
             key={x}
@@ -227,7 +224,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
     setTimeout(() => {
       setShow(true);
       clearTimeout(timeoutRef.current);
-      if (!showSearch && !disable) focusHolder.current.focus();
+      if (!withInput && !showSearch && !disable) focusHolder.current.focus();
     });
   };
   const deactivate = () => {
@@ -243,26 +240,37 @@ export const SelectBaseField = <TOption extends object | string | number>({
         className={classNames('container form-control', {
           disable,
           active: !disable && show,
-          cell: isCell
+          cell: isCell,
         })}
         onMouseDown={disable ? undefined : activate}
         onBlurCapture={deactivate}
         tabIndex={0}
         role="button"
-        ref={e => {
-          focusHolder.current = e;
-          reference.current = e;
+        ref={(e) => {
+          if (!withInput) {
+            focusHolder.current = e;
+            reference.current = e;
+          }
         }}>
         <Line justifyContent="between" alignItems="center" className={isCell ? 'content cell' : 'content'}>
           <Line className={noWrap ? 'word-hidden' : undefined} wrap>
-            {optionsBoxes}
+            {!withInput ? (
+              optionsBoxes
+            ) : (
+              <input
+                className="input-search"
+                autoFocus
+                type="text"
+                value={value as string}
+                onChange={(e) => onChange(e.target.value)}></input>
+            )}
           </Line>
           <div className="icons">
             {admitRemove && (
               <div
                 className={classNames('cross', {
                   cell: isCell,
-                  'cross-enabled': !disable
+                  'cross-enabled': !disable,
                 })}
                 style={isCell ? { borderRight: 'none' } : { borderRight: 'solid $light-grey 2px' }}
                 onClick={disable ? () => {} : onRemove ? onRemove : () => onSelectCallback(' ')}>
@@ -289,16 +297,16 @@ export const SelectBaseField = <TOption extends object | string | number>({
                   className="input-container"
                   justifyContent="between"
                   alignItems="center"
-                  onClick={e => e.stopPropagation()}>
+                  onClick={(e) => e.stopPropagation()}>
                   <input
                     className="input"
                     value={inputValue}
-                    onChange={e => setInputValue(e.target.value)}
+                    onChange={(e) => setInputValue(e.target.value)}
                     autoFocus></input>
                   <Icon name="search" className="icon"></Icon>
                 </Line>
               )}
-              <div onScroll={e => e.stopPropagation()} className="items">
+              <div onScroll={(e) => e.stopPropagation()} className="items">
                 {optionsDropdown}
               </div>
             </div>

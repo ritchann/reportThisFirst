@@ -17,7 +17,7 @@ export const MapPage: React.FC = () => {
     dispatch(getEventsAsync(mode));
   }, [dispatch, mode]);
   useEffect(() => getEvents(), [getEvents]);
-  console.log(eventsList);
+
   return (
     <div className="maps">
       <YMaps

@@ -20,6 +20,7 @@ interface Props<TOption extends object | string | number> {
   showSearch?: boolean;
   admitRemove?: boolean;
   inline?: boolean;
+  withInput?:boolean;
 }
 
 export const SelectField = <TOption extends object | string | number>({
@@ -35,6 +36,7 @@ export const SelectField = <TOption extends object | string | number>({
   disabledOptions,
   admitRemove,
   inline,
+  withInput,
   ...other
 }: Props<TOption>) => {
   const [message, setMessage] = useState(null);
@@ -69,6 +71,7 @@ export const SelectField = <TOption extends object | string | number>({
         disable={disable}
         disabledOptions={disabledOptions}
         admitRemove={admitRemove}
+        withInput={withInput}
         {...other}></SelectBaseField>
       <div className="invalid-feedback">{message}</div>
     </>
