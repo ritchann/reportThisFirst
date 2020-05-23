@@ -253,13 +253,12 @@ export const SelectBaseField = <TOption extends object | string | number>({
           }
         }}>
         <Line justifyContent="between" alignItems="center" className={isCell ? 'content cell' : 'content'}>
-          <Line className={noWrap ? 'word-hidden' : undefined} wrap>
+          <Line w="100" wrap className={classNames({ 'word-hidden': noWrap, 'input-search': withInput })}>
             {!withInput ? (
               optionsBoxes
             ) : (
               <input
                 className="input-search"
-                autoFocus
                 type="text"
                 value={value as string}
                 onChange={(e) => onChange(e.target.value)}></input>

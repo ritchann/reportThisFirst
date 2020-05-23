@@ -11,8 +11,6 @@ import { ActionType } from 'data/actionTypes';
 import { updateEventAsync } from 'data/event/action';
 import { useGeocode, httpGeocodeObject, GeocoderMetaData, GeoObject } from 'shared/mapLibrary/httpGeocoding/useGeocode';
 import './editForm.scss';
-import { http } from 'core/http';
-
 
 interface Props {
   originalEvent: EventType;
@@ -21,23 +19,42 @@ interface Props {
 export const EditForm: React.FC<Props> = ({ originalEvent }) => {
   const dispatch = useDispatch();
   const geocode = useGeocode();
+
   const [httpGeocode, setHttpGeocode] = useState<httpGeocodeObject>();
   const [event, setEvent] = useState<EventType>();
-  const [address, setAddress] = useState<string>();
-  const options = useMemo(() => {
-    return new Map<string, GeoObject>(httpGeocode?.GeoObjectCollection.featureMember.map(x=>[x.GeoObject.metaDataProperty.GeocoderMetaData.text, x.GeoObject]));
-  }, [httpGeocode]);
+  const [address, setAddress] = useState<string | undefined>(undefined);
 
-  console.log(options);
+  const options = useMemo(() => {
+    return new Map<string, GeoObject>(
+      httpGeocode?.GeoObjectCollection.featureMember.map((x) => [
+        x.GeoObject.metaDataProperty.GeocoderMetaData.text,
+        x.GeoObject,
+      ])
+    );
+  }, [httpGeocode]);
 
   const onApply = useCallback(() => dispatch(updateEventAsync({ event, onResponseCallback: () => {} })), [
     dispatch,
     event,
   ]);
 
+  useMemo(() => {
+    console.log(httpGeocode?.GeoObjectCollection?.featureMember);
+  }, [httpGeocode]);
+
   useEffect(() => {
-    geocode(address, 'def62d81-e99f-4395-8b66-dbf1a1d64c1a', 'json').then((v) => setHttpGeocode(v));
-  }, [geocode,address]);
+    if (originalEvent && !httpGeocode)
+      geocode([originalEvent.lat, originalEvent.lon], 'def62d81-e99f-4395-8b66-dbf1a1d64c1a', 'json').then(
+        (v) => (
+          setAddress(v.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.text),
+          setHttpGeocode(v)
+        )
+      );
+  }, [geocode, originalEvent, httpGeocode]);
+
+  useEffect(() => {
+    if (address !== '') geocode(address, 'def62d81-e99f-4395-8b66-dbf1a1d64c1a', 'json').then((v) => setHttpGeocode(v));
+  }, [geocode, address]);
 
   useEffect(() => setEvent(originalEvent), [originalEvent]);
 
@@ -98,29 +115,17 @@ export const EditForm: React.FC<Props> = ({ originalEvent }) => {
             />
           </Line>
         </Line>
-        <Line className="fullStroke" justifyContent="between">
-          <Line className="" vertical>
-            <div className="label">Адрес</div>
-            <SelectField withInput
-              options={options}
-              getLabel={x => x.metaDataProperty.GeocoderMetaData.text}
-              value={address}
-              onChange={(v) => setAddress(v)}></SelectField>
-            <TextBoxField name="region" value={address} onChange={setAddress} placeholder="Район" />
-          </Line>
-          <Line className="field address" vertical>
-            <TextBoxField name="house" value="" onChange={() => {}} placeholder="Дом" />
-          </Line>
+        <Line className="fullStroke" justifyContent="between" vertical>
+          <div className="label">Адрес</div>
+          <SelectField
+            withInput
+            noWrap
+            options={options}
+            getLabel={(x) => x.metaDataProperty.GeocoderMetaData.text}
+            value={address}
+            onChange={(v) => setAddress(v)}></SelectField>
         </Line>
-        <Line className="fullStroke" justifyContent="between" mt="1">
-          <Line className="field" vertical>
-            <TextBoxField name="street" value="" onChange={() => {}} placeholder="Улица" />
-          </Line>
-          <Line className="field" vertical>
-            <TextBoxField name="apartment" value="" onChange={() => {}} placeholder="Квартира" />
-          </Line>
-        </Line>
-        <Line className="fullStroke">
+        <Line mt="3" className="fullStroke">
           <TextBoxField
             className="workers"
             name="workers"

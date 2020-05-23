@@ -20,7 +20,8 @@ interface Props<TOption extends object | string | number> {
   showSearch?: boolean;
   admitRemove?: boolean;
   inline?: boolean;
-  withInput?:boolean;
+  withInput?: boolean;
+  noWrap?: boolean;
 }
 
 export const SelectField = <TOption extends object | string | number>({
@@ -37,6 +38,7 @@ export const SelectField = <TOption extends object | string | number>({
   admitRemove,
   inline,
   withInput,
+  noWrap,
   ...other
 }: Props<TOption>) => {
   const [message, setMessage] = useState(null);
@@ -49,7 +51,7 @@ export const SelectField = <TOption extends object | string | number>({
           if (!canceled) setMessage(null);
           return null;
         })
-        .catch(x => {
+        .catch((x) => {
           if (!canceled) setMessage(x.message);
           return null;
         });
@@ -72,6 +74,7 @@ export const SelectField = <TOption extends object | string | number>({
         disabledOptions={disabledOptions}
         admitRemove={admitRemove}
         withInput={withInput}
+        noWrap={noWrap}
         {...other}></SelectBaseField>
       <div className="invalid-feedback">{message}</div>
     </>
