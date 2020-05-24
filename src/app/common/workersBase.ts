@@ -1,53 +1,53 @@
-import { ServiceType } from "data/enum";
+import { ServiceType, Schedule, Experience, Employement } from "data/enum";
 import { Employee } from "data/employee/model";
 
-export const workers: { [key: string]: Employee } = {
-  0: { 
-    lastname: 'Иванов', 
+export const workers: Employee[] = [
+  {
+    id: 0,
+    lastname: 'Иванов',
     firstname: 'Иван',
-    patronymic: 'Иванович', 
-    phone: '+7(999)999-99-99',
+    patronymic: 'Иванович',
+    phone: '+79069342139',
     profession: 'электрик',
-    type: ServiceType.Electricity, 
-    schedule: '', 
-    experience: '',
-    employement: '',
-    checked: true 
-  },
-  1: { 
-    lastname: 'Алексеев', 
+    type: ServiceType.Electricity,
+    schedule: Schedule.Five_days,
+    experience: Experience.Low,
+    employement: Employement.Half_time
+  }, 
+  {
+    id: 1,
+    lastname: 'Алексеев',
     firstname: 'Алексей',
-    patronymic: 'Алексеевич', 
-    phone: '+7(999)999-99-99',
+    patronymic: 'Алексеевич',
+    phone: '+79609211178',
     profession: 'сварщик',
-    type: ServiceType.Gas, 
-    schedule: '', 
-    experience: '',
-    employement: '',
-    checked: true 
-  },
-  2: { 
-    lastname: 'Петров', 
+    type: ServiceType.Gas,
+    schedule: Schedule.Shift_work,
+    experience: Experience.High,
+    employement: Employement.Full_time
+  }, 
+  {
+    id: 2,
+    lastname: 'Петров',
     firstname: 'Петр',
-    patronymic: 'Петрович', 
-    phone: '+7(999)999-99-99',
+    patronymic: 'Петрович',
+    phone: '+79041323213',
     profession: 'сантехник',
-    type: ServiceType.Water, 
-    schedule: '', 
-    experience: '',
-    employement: '',
-    checked: true 
+    type: ServiceType.Water,
+    schedule: Schedule.Watch,
+    experience: Experience.High,
+    employement: Employement.Half_time
   },
-  3: { 
-    lastname: 'Николаев', 
+  {
+    id: 3,
+    lastname: 'Николаев',
     firstname: 'Николай',
-    patronymic: 'Николаевич', 
-    phone: '+7(999)999-99-99',
+    patronymic: 'Николаевич',
+    phone: '+79245311243',
     profession: 'сварщик',
-    type: ServiceType.Gas, 
-    schedule: '', 
-    experience: '',
-    employement: '',
-    checked: true 
-  },
-};
+    type: ServiceType.Gas,
+    schedule: Schedule.Shift_work,
+    experience: Experience.Middle,
+    employement: Employement.Part_time
+  }
+];

@@ -1,7 +1,7 @@
 @import "app/constants.scss";
 
-.workersPanel {
-  width: 35%;
+.employee-panel {
+  width: 15em;
   .title {
     font-size: 0.9em;
     width: 100%;
@@ -18,29 +18,23 @@
     }
   }
   .cards-container {
-    overflow-y: scroll;
-    height: 80vh;
-    padding-left: 0.5em;
-    padding-bottom: 0.5em;
     .workerCard {
       cursor: pointer;
-      margin-top: 1em;
-      width: 95%;
-      height: 6em;
-      padding: 0.9em;
+      min-height: 6em;
+      padding: 0.5em;
       .fullSize {
         width: 100%;
       }
       .label-container {
-        width: 25%;
         .label {
           border-radius: 10px;
           width: 1em;
           height: 1em;
-          margin-left: 0.5em;
+          margin-left: 0.75em;
         }
       }
       .info {
+        margin-left: 0.5em;
         .name {
           font-size: 1.1em;
         }

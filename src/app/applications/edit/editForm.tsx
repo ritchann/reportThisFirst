@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Card, CancelButton } from 'shared/components';
 import { Line } from 'shared/base';
 import { TextBoxField, SelectField, DateInputField } from 'shared/fields';
@@ -10,13 +10,16 @@ import { LoadingButton } from 'shared/layout';
 import { ActionType } from 'data/actionTypes';
 import { updateEventAsync } from 'data/event/action';
 import { useGeocode, httpGeocodeObject, GeocoderMetaData, GeoObject } from 'shared/mapLibrary/httpGeocoding/useGeocode';
+import { StoreType } from 'core/store';
+
 import './editForm.scss';
 
 interface Props {
   originalEvent: EventType;
+  history: any;
 }
 
-export const EditForm: React.FC<Props> = ({ originalEvent }) => {
+export const EditForm: React.FC<Props> = ({ originalEvent, history }) => {
   const dispatch = useDispatch();
   const geocode = useGeocode();
 
@@ -33,10 +36,24 @@ export const EditForm: React.FC<Props> = ({ originalEvent }) => {
     );
   }, [httpGeocode]);
 
-  const onApply = useCallback(() => dispatch(updateEventAsync({ event, onResponseCallback: () => {} })), [
-    dispatch,
-    event,
-  ]);
+  const selectedEmployees = useSelector((state: StoreType) => state.event.selectedEmployees);
+  const allEmployees = useSelector((state: StoreType) => state.employee.employees);
+
+  const selected = useMemo(() => {
+    const result: string[] = [];
+    selectedEmployees.forEach((id) => {
+      const employee = allEmployees.find((employee) => employee.id === id);
+      if (employee)
+        result.push(
+          `${employee.lastname} ${employee.firstname[0].toUpperCase()}. ${employee.patronymic[0].toUpperCase()}.`
+        );
+    });
+    return result.join(', ');
+  }, [selectedEmployees, allEmployees]);
+
+  const onApply = useCallback(() => {
+    dispatch(updateEventAsync({ event, onResponseCallback: () => history.push('/') }));
+  }, [dispatch, event, history]);
 
   useMemo(() => {
     console.log(httpGeocode?.GeoObjectCollection?.featureMember);
@@ -99,7 +116,7 @@ export const EditForm: React.FC<Props> = ({ originalEvent }) => {
             <DateInputField value={event ? new Date(event.created_at) : undefined} onChange={() => {}} disabled />
           </Line>
         </Line>
-        <Line className="fullStroke" justifyContent="between">
+        <Line className="fullStroke" justifyContent="between" mt="2">
           <Line className="field" vertical>
             <div className="label">Начало работы</div>
             <DateInputField
@@ -125,18 +142,13 @@ export const EditForm: React.FC<Props> = ({ originalEvent }) => {
             value={address}
             onChange={(v) => setAddress(v)}></SelectField>
         </Line>
-        <Line mt="3" className="fullStroke">
-          <TextBoxField
-            className="workers"
-            name="workers"
-            value=""
-            placeholder="Выберите рабочих на панели справа"
-            onChange={() => {}}>
-            Рабочие
+        <Line className="fullStroke">
+          <TextBoxField className="employees" name="employees" value={selected} onChange={() => {}}>
+            Выберите рабочих на панели справа
           </TextBoxField>
         </Line>
         <Line justifyContent="end" mt="3">
-          <CancelButton mr="2"></CancelButton>
+          <CancelButton mr="2" onClick={() => history.push('/')}></CancelButton>
           <LoadingButton
             className="btn-outline-primary"
             actionType={ActionType.EVENT_UPDATEVENTASYNC}

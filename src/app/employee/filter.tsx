@@ -8,7 +8,6 @@ import { FilterType } from 'data/employee/model';
 import { setFilter } from 'data/employee/action';
 
 import 'app/common/filterPanel.scss';
-import './filter.scss';
 
 export const Filter: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,31 +20,31 @@ export const Filter: React.FC = () => {
     }, [dispatch, filter]);
 
   return (
-    <Line pr="4" vertical className="filter-panel workers-filter">
-      <Block className="title" mt="2">
+    <Line vertical className="filter-panel">
+      <Block className="label">
         Фильтры
       </Block>
       <Checkbox
-        className="title"
+        className="label"
         text="Электричество"
         value={filter?.isElectricity}
         onChange={v => onChangeFilter('isElectricity', v)}></Checkbox>
       <Checkbox
-        className="title"
+        className="label"
         text="Вода"
         value={filter?.isWater}
         onChange={v => onChangeFilter('isWater', v)}></Checkbox>
       <Checkbox
-        className="title"
+        className="label"
         text="Газ"
         value={filter?.isGas}
         onChange={v => onChangeFilter('isGas', v)}></Checkbox>
       <Checkbox
-        className="title"
+        className="label"
         text="Теплоснабжение"
         value={filter?.isHeat}
         onChange={v => onChangeFilter('isHeat', v)}></Checkbox>
-      <Block className="title" mt="4">
+      <Block className="label" mt="4">
         Стаж работы
       </Block>
       <Block mt="2">
@@ -57,7 +56,7 @@ export const Filter: React.FC = () => {
           name="Experience"
           onChange={v => onChangeFilter('experience', v)}></SelectField>
       </Block>
-      <Block className="title" mt="3">
+      <Block className="label" mt="3">
         Занятость
       </Block>
       <Block mt="2">
@@ -69,7 +68,7 @@ export const Filter: React.FC = () => {
           name="Employement"
           onChange={v => onChangeFilter('employement', v)}></SelectField>
       </Block>
-      <Block className="title" mt="3">
+      <Block className="label" mt="3">
         График
       </Block>
       <Block mt="2">

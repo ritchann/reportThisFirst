@@ -31,3 +31,21 @@ export enum Sort {
   First = 0,
   Last = 1
 }
+
+export enum Employement {
+  Full_time = 'full_time',
+  Part_time = 'part_time',
+  Half_time = 'half_time'
+}
+
+export enum Schedule {
+  Five_days = 'five_days',
+  Shift_work = 'shift_work',
+  Watch = 'watch'
+}
+
+export enum Experience {
+  Low = 'low',
+  Middle = 'middle',
+  High = 'high'
+}

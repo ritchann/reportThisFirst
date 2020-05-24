@@ -1,63 +1,59 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import classnames from 'classnames';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { Line, Icon } from 'shared/base';
 import { ServiceType, Sort } from 'data/enum';
-import { Card, EditButton, DeleteButton } from 'shared/components';
-import { DateTime } from 'shared/base/utils/dateTime';
+import { Pagination } from 'shared/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { StoreType } from 'core/store';
 import { setSort } from 'data/files/action';
+import { FileType } from 'data/files/model';
+import { usePagination } from 'app/common/usePagination';
 
 import { DeleteDialog } from './deleteDialog';
+import { FileCard } from './fileCard';
+
 import './archive.scss';
 
-type FileType = {
-  title: string;
-  date: Date;
-  type: string;
-}
-
-const filesOriginal: FileType[] = [
-  { title: "Плановые отключения воды", date: new Date(2020, 0, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения электричества', date: new Date(2020, 1, 5), type: ServiceType.Electricity },
-  { title: 'Плановые отключения газа', date: new Date(2020, 2, 5), type: ServiceType.Gas },
-  { title: 'Плановые отключения воды', date: new Date(2020, 3, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения воды', date: new Date(2020, 4, 5), type: ServiceType.Water },
-  { title: 'Плановые отключения воды', date: new Date(2020, 5, 5), type: ServiceType.Water }
-];
+const maxElements = 2;
 
 export const Archive: React.FC = () => {
   const dispatch = useDispatch();
 
+  const [activePage, setActivePage] = useState(1);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [files, setFiles] = useState<FileType[]>([]);
+  const [pages, setPages] = useState<{ [page: number]: FileType[] }>({ 1: [] });
+  const [maxPages, setMaxPages] = useState(1);
 
-  const filter = useSelector((state: StoreType) => state.files.filter);
-  const sort = useSelector((state: StoreType) => state.files.sort);
+  const getPages = usePagination<FileType>(maxElements);
 
-  const onFilterFiles = useCallback((files: FileType[]) => {
-    const types: string[] = [];
-    if (filter.isElectricity) types.push(ServiceType.Electricity);
-    if (filter.isGas) types.push(ServiceType.Gas);
-    if (filter.isHeat) types.push(ServiceType.Heat);
-    if (filter.isWater) types.push(ServiceType.Water);
+  const { files: filesOriginal, filter, sort } = useSelector((state: StoreType) => state.files);
 
-    let newFiles = [...files];
-    if (types.length > 0) newFiles = newFiles.filter(x => types.includes(x.type));
-    return newFiles;
-  }, [filter]);
+  const onFilterFiles = useCallback(
+    (files: FileType[]) => {
+      const types: string[] = [];
+      if (filter.isElectricity) types.push(ServiceType.Electricity);
+      if (filter.isGas) types.push(ServiceType.Gas);
+      if (filter.isHeat) types.push(ServiceType.Heat);
+      if (filter.isWater) types.push(ServiceType.Water);
 
-  const onSortFiles = useCallback((files: FileType[]) => {
-    let newFiles = [...files];
-    sort === Sort.First ?
-      newFiles.sort((p, c) => p.date.getTime() - c.date.getTime())
-      :
-      newFiles.sort((p, c) => c.date.getTime() - p.date.getTime());
-    return newFiles;
-  }, [sort]);
+      let newFiles = [...files];
+      if (types.length > 0) newFiles = newFiles.filter((x) => types.includes(x.type));
+      if (filter.dateFrom) newFiles = newFiles.filter((x) => x.date.getTime() >= filter.dateFrom.getTime());
+      if (filter.dateTo) newFiles = newFiles.filter((x) => x.date.getTime() <= filter.dateTo.getTime());
+      return newFiles;
+    },
+    [filter]
+  );
+
+  const onSortFiles = useCallback(
+    (files: FileType[]) => {
+      let newFiles = [...files];
+      sort === Sort.First
+        ? newFiles.sort((p, c) => p.date.getTime() - c.date.getTime())
+        : newFiles.sort((p, c) => c.date.getTime() - p.date.getTime());
+      return newFiles;
+    },
+    [sort]
+  );
 
   const onChangeSort = useCallback(() => dispatch(setSort(Number(!sort))), [dispatch, sort]);
 
@@ -65,13 +61,15 @@ export const Archive: React.FC = () => {
     let result: FileType[] = [...filesOriginal];
     let handledResult = onFilterFiles(result);
     handledResult = onSortFiles(handledResult);
-    setFiles(handledResult);
-  }, [onFilterFiles, onSortFiles]);
+    setPages(getPages(handledResult));
+    setMaxPages(Math.round(handledResult.length / maxElements));
+    setActivePage(1);
+  }, [onFilterFiles, onSortFiles, getPages, filesOriginal]);
 
   return (
     <>
       <Line className="archive" vertical>
-        <Line className="header" justifyContent="between" alignItems="baseline">
+        <Line className="header" justifyContent="between">
           <div className="title">Архив</div>
           <Line className="sort" alignItems="center" onClick={onChangeSort}>
             {sort == Sort.Last ? (
@@ -79,41 +77,21 @@ export const Archive: React.FC = () => {
                 <Line mr="1">Последние</Line>
                 <Icon name="angle-down"></Icon>
               </>
-            ) : <>
+            ) : (
+              <>
                 <Line mr="1">Ранние</Line>
                 <Icon name="angle-up"></Icon>
               </>
-            }
+            )}
           </Line>
         </Line>
         <div className="files-archive">
-          <Line vertical>
-            {files.map((file, i) => {
-              return (
-                <Card key={i} className="file-card">
-                  <Line className="card-container" justifyContent="between" alignItems="center">
-                    <Line>
-                      <div className='icon'>
-                        <Icon name="file-alt" prefix="far" className={classnames({
-                          'electricity-icon': file.type === ServiceType.Electricity,
-                          'water-icon': file.type === ServiceType.Water,
-                          'gas-icon': file.type === ServiceType.Gas
-                        })}></Icon>
-                      </div>
-                      <Line vertical ml="4" mt="2">
-                        <div className="title">{file.title}</div>
-                        <div className="lighter-text">{DateTime.format(new Date(file.date))}</div>
-                      </Line>
-                    </Line>
-                    <Line vertical mr="4">
-                      <EditButton small mb="2" header="Скачать" />
-                      <DeleteButton small onClick={() => setShowDeleteDialog(true)} />
-                    </Line>
-                  </Line>
-                </Card>
-              );
-            })}
+          <Line vertical mt="3" mb="3">
+            {pages[activePage].map((x, i) => (
+              <FileCard key={i} model={x} openDeleteDialog={setShowDeleteDialog} />
+            ))}
           </Line>
+          <Pagination maxPages={maxPages} active={activePage} setActive={setActivePage} />
         </div>
       </Line>
       {showDeleteDialog && <DeleteDialog onClose={() => setShowDeleteDialog(false)} />}

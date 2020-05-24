@@ -13,6 +13,7 @@ interface Props {
   type?: string;
   prepend?: JSX.Element;
   className?: string;
+  isInvalid?: boolean;
 }
 
 export const TextBoxField: React.FC<Props> = ({
@@ -26,7 +27,8 @@ export const TextBoxField: React.FC<Props> = ({
   size,
   children,
   prepend,
-  className
+  className,
+  isInvalid
 }) => {
   value = value == null ? '' : value;
   const [message, setMessage] = useState(null);
@@ -34,12 +36,12 @@ export const TextBoxField: React.FC<Props> = ({
     let canceled = false;
     if (schema != null && fieldPath != null)
       schema
-        .validateAt(fieldPath, value)
+        .validate({ [`${fieldPath}`]: value })
         .then(() => {
           if (!canceled) setMessage(null);
           return null;
         })
-        .catch(x => {
+        .catch((x) => {
           if (!canceled) setMessage(x.message);
           return null;
         });
@@ -61,7 +63,7 @@ export const TextBoxField: React.FC<Props> = ({
         )}
         <input
           type={type}
-          className={classNames('form-control', { 'is-invalid': message })}
+          className={classNames('form-control', { 'is-invalid': isInvalid })}
           id={name}
           name={name}
           placeholder={placeholder}

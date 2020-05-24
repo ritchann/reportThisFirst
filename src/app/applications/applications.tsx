@@ -1,13 +1,10 @@
 import React from 'react';
-import { Line } from 'shared/base/line';
 import { ApplicationsList } from 'app/applications/applicationsList';
 import { FilterPanel } from 'app/applications/filterPanel';
+import { Page } from 'shared/layout/page';
+
+import { Toggle } from './toggle';
 
 export const Applications: React.FC = () => {
-  return (
-    <Line className="main-container" mt="4">
-      <ApplicationsList />
-      <FilterPanel />
-    </Line>
-  );
+  return <Page pageTitle={<Toggle />} pageContent={<ApplicationsList />} filterPanel={<FilterPanel />}></Page>;
 };

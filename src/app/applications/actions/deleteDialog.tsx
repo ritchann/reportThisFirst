@@ -40,7 +40,7 @@ export const DeleteDialog: React.FC<Props> = ({ onClose, event }) => {
 
   return (
     <Modal header="Удаление заявки" onCancel={() => onClose(false)} footer={footer}>
-      <div className="text-modal">Вы уверены, что хотите удалить заявку из подтвержденных?</div>
+      <div className="text-modal lighter-text">Вы уверены, что хотите удалить заявку из подтвержденных?</div>
     </Modal>
   );
 };

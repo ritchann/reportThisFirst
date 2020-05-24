@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Line } from 'shared/base';
 import { StoreType } from 'core/store';
 import { EventType } from 'data/event/model';
+import { Page } from 'shared/layout';
 
 import { EditForm } from './editForm';
-import { WorkersPanel } from './workersPanel';
+import { EmployeePanel } from './employeePanel';
 
 import './editPage.scss';
 
@@ -21,12 +21,9 @@ export const EditPage: React.FC = (props) => {
   }, [props, events]);
 
   return (
-    <div className="editPage">
-      <Line className="title">Редактирование заявки</Line>
-      <Line>
-        <EditForm originalEvent={event} />
-        <WorkersPanel />
-      </Line>
-    </div>
+    <Page
+      pageTitle={<div>Редактирование заявки</div>}
+      pageContent={<EditForm originalEvent={event} history={(props as any).history} />}
+      filterPanel={<EmployeePanel />}></Page>
   );
 };

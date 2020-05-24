@@ -1,0 +1,12 @@
+@import "app/constants.scss";
+
+.employee-page {
+  .title {
+    margin-bottom: 0;
+  }
+  .add {
+    cursor: pointer;
+    margin-bottom: 1em;
+    font-size: 0.75em;
+  }
+}

@@ -6,3 +6,9 @@ export interface FilterType {
   dateFrom?: Date;
   dateTo?: Date;
 }
+
+export interface FileType {
+  title: string;
+  date: Date;
+  type: string;
+}

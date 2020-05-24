@@ -1,32 +1,44 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { CancelButton, ApproveButton } from 'shared/components';
 import { Modal, Line } from 'shared/base';
 import { MultiselectField } from 'shared/fields';
-import { setWorkersFilter } from 'data/event/action';
+import { setEmployeeFilter } from 'data/event/action';
 import { type, schedule, experience, employement } from 'app/common/translations';
-import { WorkerFilterType } from 'data/event/model';
+import { EmployeeFilterType } from 'data/event/model';
+import { StoreType } from 'core/store';
 
-import './workerFilter.scss';
+import './employeeFilter.scss';
 
 interface Props {
   onClose: () => void;
 }
 
-export const WorkerFilter: React.FC<Props> = ({ onClose }) => {
+export const EmployeeFilter: React.FC<Props> = ({ onClose }) => {
   const dispatch = useDispatch();
 
-  const [model, setModel] = useState<WorkerFilterType>();
+  const filter = useSelector((state: StoreType) => state.event.workersFilter);
+
+  const [model, setModel] = useState<EmployeeFilterType>();
 
   const footer = (
     <>
-      <CancelButton text="Сбросить" small onClick={() => dispatch(setWorkersFilter({ isApplied: false }))} />
-      <ApproveButton text="Применить" small onClick={() => dispatch(setWorkersFilter({ isApplied: true }))} />
+      <CancelButton text="Сбросить" small onClick={() => dispatch(setEmployeeFilter({}))} />
+      <ApproveButton
+        text="Применить"
+        small
+        onClick={() => {
+          dispatch(setEmployeeFilter(model));
+          onClose();
+        }}
+      />
     </>
   );
 
+  useEffect(() => setModel(filter), [filter]);
+
   return (
-    <Modal onCancel={onClose} footer={footer} size="lg" className="workerFilter" noHeight>
+    <Modal onCancel={onClose} footer={footer} className="employee-filter" noHeight>
       <Line vertical>
         <MultiselectField
           className="field"
@@ -43,7 +55,7 @@ export const WorkerFilter: React.FC<Props> = ({ onClose }) => {
           options={schedule}
           getLabel={(x: string) => x}
           getContent={(x) => schedule.get(x) ?? ''}
-          onChange={(schedule: string[]) => setModel({ ...model, schedule })}></MultiselectField>
+          onChange={(x) => setModel({ ...model, schedule: x?.length > 0 ? x : undefined })}></MultiselectField>
         <MultiselectField
           className="field"
           label="Стаж"
@@ -51,7 +63,7 @@ export const WorkerFilter: React.FC<Props> = ({ onClose }) => {
           options={experience}
           getLabel={(x: string) => x}
           getContent={(x) => experience.get(x) ?? ''}
-          onChange={(experience: string[]) => setModel({ ...model, experience })}></MultiselectField>
+          onChange={(x) => setModel({ ...model, experience: x?.length > 0 ? x : undefined })}></MultiselectField>
         <MultiselectField
           className="field"
           label="Занятость"
@@ -59,7 +71,7 @@ export const WorkerFilter: React.FC<Props> = ({ onClose }) => {
           options={employement}
           getLabel={(x: string) => x}
           getContent={(x) => employement.get(x) ?? ''}
-          onChange={(employement: string[]) => setModel({ ...model, employement })}></MultiselectField>
+          onChange={(x) => setModel({ ...model, employement: x?.length > 0 ? x : undefined })}></MultiselectField>
       </Line>
     </Modal>
   );

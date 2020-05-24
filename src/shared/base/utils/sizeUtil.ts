@@ -25,4 +25,3 @@ export interface SizeProps {
       [`vh-100`]: vh
     };
   }
-  

@@ -1,15 +1,14 @@
 @import 'app/constants.scss';
 
 .filter-panel {
-  margin-right: 2em;
-  margin-top: 2.2em;
+  width: 10em;
   .form-control {
     border: 1px solid white;
     font-weight: lighter;
     font-style: italic;
     font-size: 0.75em;
   }
-  .title {
+  .label {
     font-size: 0.75em;
   }
 }

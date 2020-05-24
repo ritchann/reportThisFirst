@@ -2,6 +2,7 @@ import React, { createRef } from 'react';
 import classNames from 'classnames';
 import DatePicker from 'react-datepicker';
 import TextMask, { conformToMask } from 'react-text-mask';
+import { Icon, ImportedIcon } from 'shared/base/icon';
 import { DateTime } from 'shared/base/utils/dateTime';
 
 import './dateInputField.scss';
@@ -11,12 +12,13 @@ interface Props {
   onChange: (value: Date) => any;
   placeholder?: string;
   size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'auto';
+  icon?: ImportedIcon;
   prefix?: 'fas' | 'far';
   name?: string;
   shouldClosedOnSelect?: boolean;
-  children?: React.ReactChild;
+  openToDate?: Date | undefined;
+  excludeDates?: Date[];
   disabled?: boolean;
-  className?: string;
 }
 
 const convertFromDate = (value: Date, mask: (string | RegExp)[]) => {
@@ -37,18 +39,28 @@ export const DateInputField: React.FC<Props> = ({
   onChange,
   size,
   placeholder,
+  icon,
+  prefix = 'fas',
   shouldClosedOnSelect,
   children,
-  disabled = false,
-  className
-}: Props) => {
+  openToDate,
+  excludeDates,
+  disabled = false
+}) => {
   const inputRef = createRef<TextMask>();
   const datePickerRef = createRef<DatePicker>();
 
   return (
-    <div className={classNames('form-group w-md-100 date-input-field', { [`col-md-${size}`]: size != null }, className)}>
+    <div
+      className={classNames('form-group w-md-100 mb-0 date-input-field', {
+        [`col-md-${size}`]: size != null
+      })}>
       <DatePicker
         disabled={disabled}
+        showMonthDropdown
+        showYearDropdown
+        excludeDates={excludeDates}
+        openToDate={openToDate}
         shouldCloseOnSelect={shouldClosedOnSelect}
         popperProps={{ positionFixed: true }}
         selected={value}
@@ -80,6 +92,13 @@ export const DateInputField: React.FC<Props> = ({
               keepCharPositions={true}
               ref={inputRef}
             />
+            {icon && (
+              <div className="input-group-append ">
+                <div className="input-group-text">
+                  <Icon prefix={prefix} name={icon}></Icon>
+                </div>
+              </div>
+            )}
           </div>
         }
       />

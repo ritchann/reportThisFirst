@@ -29,7 +29,10 @@ interface Props<TOption extends object | string | number> {
   inline?: boolean;
   dragAndDrop?: boolean;
   withInput?: boolean;
+  onlyKeys?: boolean;
 }
+
+const maxBoxes = 2;
 
 export const SelectBaseField = <TOption extends object | string | number>({
   label,
@@ -53,6 +56,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
   inline,
   dragAndDrop = false,
   withInput = false,
+  onlyKeys = true
 }: Props<TOption>) => {
   if (multiselect && !Array.isArray(value)) {
     value = [];
@@ -167,7 +171,9 @@ export const SelectBaseField = <TOption extends object | string | number>({
       );
     } else {
       const val = (value as string[]) ?? [];
-      return val.map((x) => {
+      let result = [...val];
+      result = isCell && val.length > maxBoxes ? result.splice(0, maxBoxes) : result;
+      return result.map((x) => {
         const option = options.get(x);
         return (
           <div
@@ -198,7 +204,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
                   {getLabel(option)}
                 </Line>
               ) : (
-                <Line>{x}</Line>
+                <Line className="box-label">{onlyKeys ? x : getLabel(option)}</Line>
               )
             ) : (
               ''
@@ -215,7 +221,20 @@ export const SelectBaseField = <TOption extends object | string | number>({
         );
       });
     }
-  }, [disable, dnd, dragAndDrop, getContent, getLabel, multiselect, onDropCallback, onSelectCallback, options, value]);
+  }, [
+    disable,
+    dnd,
+    dragAndDrop,
+    getContent,
+    getLabel,
+    isCell,
+    multiselect,
+    onDropCallback,
+    onSelectCallback,
+    onlyKeys,
+    options,
+    value,
+  ]);
 
   const focusHolder = useRef<any>(null);
   const timeoutRef = useRef<any>(null);
@@ -233,6 +252,10 @@ export const SelectBaseField = <TOption extends object | string | number>({
       if (onDeactivated) onDeactivated();
     });
   };
+
+  const countString =
+    multiselect && isCell && value.length > maxBoxes ? `and ${value.length - maxBoxes} more` : undefined;
+
   return (
     <div className={classNames('multiselect', { [`col-md-${size}`]: size != null, ' inline': inline }, className)}>
       {label && <label className="label">{label}</label>}
@@ -265,7 +288,7 @@ export const SelectBaseField = <TOption extends object | string | number>({
             )}
           </Line>
           <div className="icons">
-            {admitRemove && (
+            {admitRemove && !multiselect && (
               <div
                 className={classNames('cross', {
                   cell: isCell,
@@ -278,7 +301,8 @@ export const SelectBaseField = <TOption extends object | string | number>({
             )}
             {multiselect && options?.size > 0 && (
               <div
-                className={classNames('cross', { 'cross-enabled': !disable })}
+                className={classNames('cross', { 'cross-enabled': !disable, cell: isCell })}
+                style={isCell ? { borderRight: 'none' } : { borderRight: 'solid $light-grey 2px' }}
                 onClick={() => {
                   if (!disable) value?.length != 0 ? onChange([]) : onChange(Array.from(options).map(([key]) => key));
                 }}>

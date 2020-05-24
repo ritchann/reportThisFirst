@@ -22,17 +22,19 @@ export const priority = new Map([
 ]);
 
 export const employement = new Map([
-  ['full_time', 'Полная'],
-  ['part_time', 'Частичная']
+  ['full_time', 'Полный рабочий день'],
+  ['part_time', '30 часов в неделю'],
+  ['half_time', '20 часов в неделю']
 ]);
 
 export const experience = new Map([
-  ['less_5', 'Менее 5 лет'],
-  ['more_5', 'Более 5 лет']
+  ['low','До 3 лет'],
+  ['middle','3-5 лет'],
+  ['high','Более 5 лет']
 ]);
 
 export const schedule = new Map([
-  ['full_day', 'Полный рабочий день'],
-  ['0.75', '30 часов в неделю'],
-  ['0.5', '20 часов в неделю']
+  ['five_days', '5 через 2'],
+  ['shift_work', 'Сменный'],
+  ['watch','Вахтовый']
 ]);
